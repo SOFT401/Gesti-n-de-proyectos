@@ -1,0 +1,39 @@
+{%  set config = get_config() %}
+<!DOCTYPE html>
+<html lang="{{ config.language }}">
+<head>
+	<meta charset="utf-8">
+	<title>{{ config.appname }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta content="{{ config.site_description }}" name="description" />
+    <meta content="{{ config.site_author }}" name="author" />
+    {{ extcss('bootstrap/css/bootstrap.min.css') }}
+    {{ extcss('bootstrap/css/bootstrap-responsive.min.css') }}
+    {{ extcss('font-awesome/css/font-awesome.css') }}
+    {{ css('style.css') }}
+    {{ css('style-responsive.css') }}
+   <link href="{{ asset_url() }}css/style-default.css" rel="stylesheet" id="style_color" />
+
+	<!-- The fav icon -->
+	<link rel="shortcut icon" href="{{ asset_url() }}imgapp/favicon.png">
+	{% block headext %}
+    {% endblock %}	
+</head>
+<body>
+<div class="lock-header">
+    <!-- BEGIN LOGO -->
+    <a class="center" id="logo" href="{{ site_url() }}">
+    <h2>{{ lang('auth_welcome')|format(config.appname) }}</h2>
+        
+        <img style="width:150px;" alt="logo" src="{{ asset_url() }}imgapp/logo.png">
+    </a>
+    <!-- END LOGO -->
+</div>
+<div class="row-fluid">
+{% block content %}
+{% endblock %}
+</div>
+{% block jscode %}
+{% endblock %}
+</body>
+</html>

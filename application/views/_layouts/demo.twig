@@ -1,0 +1,405 @@
+{%  set config = get_config() %}
+{%  set CI = get_instance() %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+   <meta charset="utf-8" />
+   <title>{{ config.appname }}</title>
+   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+   <meta content="{{ config.site_description }}" name="description" />
+   <meta content="{{ config.site_author }}" name="author" />
+   {{ extcss('bootstrap/css/bootstrap.min.css') }}
+   {{ extcss('bootstrap/css/bootstrap-responsive.min.css') }}
+   {{ extcss('bootstrap/css/bootstrap-fileupload.css') }}
+   {{ extcss('font-awesome/css/font-awesome.css') }}
+   {{ css('style.css') }}
+   {{ css('style-responsive.css') }}
+   <link href="{{ asset_url() }}css/style-default.css" rel="stylesheet" id="style_color" />
+   <link rel="shortcut icon" href="{{ asset_url()~'imgapp/favicon.ico' }}">
+   
+   {% block headext %}{% endblock %}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+{% import '_tools/navigation.twig' as nav %}
+<body class="fixed-top">
+   <!-- BEGIN HEADER -->
+   <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+       <!-- BEGIN TOP NAVIGATION BAR -->
+       <div class="navbar-inner">
+           <div class="container-fluid">
+               <!--BEGIN SIDEBAR TOGGLE-->
+               <div class="sidebar-toggle-box hidden-phone">
+                   <div class="icon-reorder"></div>
+               </div>
+               <!--END SIDEBAR TOGGLE-->
+               <!-- BEGIN LOGO -->
+               <a class="brand" href="{{ site_url() }}">
+                   <link rel="shortcut icon" href="{{ asset_url()~'imgapp/favicon.ico' }}">
+                   <img src="{{ asset_url()~'imgapp/logo.jpg'}}" alt="{{ config.appname }}" style="height:30px;" />
+               </a>
+               <!-- END LOGO -->
+               <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+               <a class="btn btn-navbar collapsed" id="main_menu_trigger" data-toggle="collapse" data-target=".nav-collapse">
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="arrow"></span>
+               </a>
+               <!-- END RESPONSIVE MENU TOGGLER -->
+               <div id="top_menu" class="nav notify-row">
+                   <!-- BEGIN NOTIFICATION -->
+                   <ul class="nav top-menu">
+                       <!-- BEGIN SETTINGS -->
+                       <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <i class="icon-tasks"></i>
+                               <span class="badge badge-important">2</span>
+                           </a>
+                           <ul class="dropdown-menu extended tasks-bar">
+                               <li>
+                                   <a href="#">
+                                       <div class="task-info">
+                                         <div class="desc">Dashboard v1.3</div>
+                                         <div class="percent">44%</div>
+                                       </div>
+                                       <div class="progress progress-striped active no-margin-bot">
+                                           <div class="bar" style="width: 44%;"></div>
+                                       </div>
+                                   </a>
+                               </li>
+                               <li>
+                                   <a href="#">
+                                       <div class="task-info">
+                                           <div class="desc">Database Update</div>
+                                           <div class="percent">65%</div>
+                                       </div>
+                                       <div class="progress progress-striped progress-success active no-margin-bot">
+                                           <div class="bar" style="width: 65%;"></div>
+                                       </div>
+                                   </a>
+                               </li>
+                           </ul>
+                       </li>
+                       <!-- END SETTINGS -->
+                       <!-- BEGIN INBOX DROPDOWN -->
+                       <li class="dropdown" id="header_inbox_bar">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <i class="icon-envelope-alt"></i>
+                               <span class="badge badge-important">2</span>
+                           </a>
+                           <ul class="dropdown-menu extended inbox">
+                               <li>
+                                   <a href="#">
+                                       <span class="photo">{{ img('avatar-mini.png',{alt:'avatar'}) }}</span>
+									<span class="subject">
+									<span class="from">Jonathan Smith</span>
+									<span class="time">Just now</span>
+									</span>
+									<span class="message">
+									    Hello, this is an example msg.
+									</span>
+                                   </a>
+                               </li>
+                               <li>
+                                   <a href="#">
+                                       <span class="photo">{{ img('avatar-mini.png',{alt:'avatar'}) }}</span>
+									<span class="subject">
+									<span class="from">Jhon Doe</span>
+									<span class="time">10 mins</span>
+									</span>
+									<span class="message">
+									 Hi, Jhon Doe Bhai how are you ?
+									</span>
+                                   </a>
+                               </li>
+                           </ul>
+                       </li>
+                       <!-- END INBOX DROPDOWN -->
+                       <!-- BEGIN NOTIFICATION DROPDOWN -->
+                       <li class="dropdown" id="header_notification_bar">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                               <i class="icon-bell-alt"></i>
+                               <span class="badge badge-warning">2</span>
+                           </a>
+                           <ul class="dropdown-menu extended notification">
+                               <li>
+                                   <a href="#">
+                                       <span class="label label-important"><i class="icon-bolt"></i></span>
+                                       Server #3 overloaded.
+                                       <span class="small italic">34 mins</span>
+                                   </a>
+                               </li>
+                               <li>
+                                   <a href="#">
+                                       <span class="label label-warning"><i class="icon-bell"></i></span>
+                                       Server #10 not respoding.
+                                       <span class="small italic">1 Hours</span>
+                                   </a>
+                               </li>
+                           </ul>
+                       </li>
+                       <!-- END NOTIFICATION DROPDOWN -->
+
+                   </ul>
+               </div>
+               <!-- END  NOTIFICATION -->
+               <div class="top-nav ">
+                   <ul class="nav pull-right top-menu" >
+                       <!-- BEGIN SUPPORT -->
+                       <li class="dropdown mtop5">
+
+                           <a class="dropdown-toggle element" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Chat">
+                               <i class="icon-comments-alt"></i>
+                           </a>
+                       </li>
+                       <li class="dropdown mtop5">
+                           <a class="dropdown-toggle element" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Help">
+                               <i class="icon-headphones"></i>
+                           </a>
+                       </li>
+                       <!-- END SUPPORT -->
+                       <!-- BEGIN USER LOGIN DROPDOWN -->
+                       <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               {{ img('avatar1_small.jpg') }}
+                               <span class="username">{{ CI.session.userdata('username') }}</span>
+                               <b class="caret"></b>
+                           </a>
+                           <ul class="dropdown-menu extended logout">
+                            {% if CI.session.userdata('username') %}
+                                <li><a href="{{ site_url('user/profile')}}"><i class="icon-user"></i> {{ lang('logout') }} </a></li>
+                                <li><a href="{{ site_url('user/settings')}}"><i class="icon-cog"></i> {{ lang('logout') }} </a></li>
+                                <li><a href="{{ site_url('user/logout')}}"><i class="icon-key"></i> {{ lang('logout') }} </a></li>
+                            {% else %}
+                                <li><a href="{{ site_url('user/login')}}">{{ lang('login') }}</a></li>
+                            {% endif %}
+                           </ul>
+                       </li>
+                       <!-- END USER LOGIN DROPDOWN -->
+                   </ul>
+                   <!-- END TOP NAVIGATION MENU -->
+               </div>
+           </div>
+       </div>
+       <!-- END TOP NAVIGATION BAR -->
+   </div>
+   <!-- END HEADER -->
+   <!-- BEGIN CONTAINER -->
+   <div id="container" class="row-fluid">
+      <!-- BEGIN SIDEBAR -->
+      <div class="sidebar-scroll">
+          <div id="sidebar" class="nav-collapse collapse">
+
+              <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+              <div class="navbar-inverse">
+                  <form class="navbar-search visible-phone">
+                      <input type="text" class="search-query" placeholder="Search" />
+                  </form>
+              </div>
+              <!-- END RESPONSIVE QUICK SEARCH FORM -->
+              <!-- BEGIN SIDEBAR MENU -->
+              
+              <ul class="sidebar-menu">
+                    <li class="sub-menu active">
+                  <a class="" href="index.html">
+                      <i class="icon-dashboard"></i>
+                      <span>Dashboard</span>
+                  </a>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-book"></i>
+                      <span>UI Elements</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/ui/general") }}">General</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/button") }}">Buttons</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/slider") }}">Sliders</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/metro_view") }}">Metro View</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/tabs_accordion") }}">Tabs & Accordions</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/typography") }}">Typography</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/tree_view") }}">Tree View</a></li>
+                      <li><a class="" href="{{ site_url("demo/ui/nestable") }}">Nestable List</a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-cogs"></i>
+                      <span>Components</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/components/calendar") }}">Calendar</a></li>
+                      <li><a class="" href="{{ site_url("demo/components/grids") }}">Grids</a></li>
+                      <li><a class="" href="{{ site_url("demo/components/chartjs") }}">Chart Js</a></li>
+                      <li><a class="" href="{{ site_url("demo/components/flot_chart") }}">Flot Charts</a></li>
+                      <li><a class="" href="{{ site_url("demo/components/gallery") }}"> Gallery</a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-tasks"></i>
+                      <span>Form Stuff</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/form/layout") }}">Form Layouts</a></li>
+                      <li><a class="" href="{{ site_url("demo/form/component") }}">Form Components</a></li>
+                      <li><a class="" href="{{ site_url("demo/form/wizard") }}">Form Wizard</a></li>
+                      <li><a class="" href="{{ site_url("demo/form/validation") }}">Form Validation</a></li>
+                      <li><a class="" href="{{ site_url("demo/form/dropzone") }}">Dropzone File Upload </a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-th"></i>
+                      <span>Data Tables</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/table/basic") }}">Basic Table</a></li>
+                      <li><a class="" href="{{ site_url("demo/table/dynamic") }}">Dynamic Table</a></li>
+                      <li><a class="" href="{{ site_url("demo/table/editable") }}">Editable Table</a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-fire"></i>
+                      <span>Icons</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/icons/fonts") }}">Font Awesome</a></li>
+                      <li><a class="" href="{{ site_url("demo/icons/glyphicons") }}">Glyphicons</a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-file-alt"></i>
+                      <span>Sample Pages</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/sample/blank") }}">Blank Page</a></li>
+                      <li><a class="" href="{{ site_url("demo/sample/blog") }}">Blog</a></li>
+                      <li><a class="" href="{{ site_url("demo/sample/timeline") }}">Timeline</a></li>
+                      <li><a class="" href="{{ site_url("demo/sample/about_us") }}">About Us</a></li>
+                      <li><a class="" href="{{ site_url("demo/sample/contact_us") }}">Contact Us</a></li>
+                  </ul>
+              </li>
+              <li class="sub-menu">
+                  <a href="javascript:;" class="">
+                      <i class="icon-glass"></i>
+                      <span>Extra</span>
+                      <span class="arrow"></span>
+                  </a>
+                  <ul class="sub">
+                      <li><a class="" href="{{ site_url("demo/extra/lock") }}">Lock Screen</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/invoice") }}">Invoice</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/pricing_tables") }}">Pricing Tables</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/search_result") }}">Search Result</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/faq") }}">FAQ</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/404") }}">404 Error</a></li>
+                      <li><a class="" href="{{ site_url("demo/extra/500") }}">500 Error</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a class="" href="{{ site_url("demo/login") }}">
+                    <i class="icon-user"></i>
+                    <span>Login Page</span>
+                  </a>
+              </li>
+              </ul>
+              <!-- END SIDEBAR MENU -->
+          </div>
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->  
+      <div id="main-content">
+         <!-- BEGIN PAGE CONTAINER-->
+         <div class="container-fluid">
+            <!-- BEGIN PAGE HEADER-->   
+            <div class="row-fluid">
+               <div class="span12">
+                   <!-- BEGIN THEME CUSTOMIZER-->
+                   <div id="theme-change" class="hidden-phone">
+                       <i class="icon-cogs"></i>
+                        <span class="settings">
+                            <span class="text">Theme Color:</span>
+                            <span class="colors">
+                                <span class="color-default" data-style="default"></span>
+                                <span class="color-green" data-style="green"></span>
+                                <span class="color-gray" data-style="gray"></span>
+                                <span class="color-purple" data-style="purple"></span>
+                                <span class="color-red" data-style="red"></span>
+                            </span>
+                        </span>
+                   </div>
+                   <!-- END THEME CUSTOMIZER-->
+                  <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                   <h3 class="page-title">
+                     {% block pagetitle %}{% endblock %}
+                   </h3>
+                   <ul class="breadcrumb">
+                       {% block breadcrumb %}{% endblock %}
+                   </ul>
+                   <!-- END PAGE TITLE & BREADCRUMB-->
+               </div>
+            </div>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+             <div class="row-fluid">
+                 <div class="span12">
+                     <!-- BEGIN BLANK PAGE PORTLET-->
+                     {% block content %}{% endblock %}
+                     <!-- END BLANK PAGE PORTLET-->
+                 </div>
+             </div>
+            <!-- END PAGE CONTENT-->
+         </div>
+         <!-- END PAGE CONTAINER-->
+      </div>
+      <!-- END PAGE -->  
+   </div>
+   <!-- END CONTAINER -->
+
+   <!-- BEGIN FOOTER -->
+   <div id="footer">
+       {% block footer %}{% endblock %}
+   </div>
+   <!-- END FOOTER -->
+
+   <!-- BEGIN JAVASCRIPTS -->
+   <!-- Load javascripts at bottom, this will reduce page load time -->
+   {{ js('jquery-1.8.3.min.js') }}
+   {{ js('jquery.nicescroll.js') }}
+   {{ extjs('jquery-slimscroll/jquery-ui-1.9.2.custom.min.js') }}
+   {{ extjs('jquery-slimscroll/jquery.slimscroll.min.js') }}
+   {{ extjs('bootstrap/js/bootstrap.min.js') }}
+
+   <!-- ie8 fixes -->
+   <!--[if lt IE 9]>
+   <script src="js/excanvas.js"></script>
+   <script src="js/respond.js"></script>
+   <![endif]-->
+    {{ extjs('fullcalendar/fullcalendar/fullcalendar.min.js') }}
+    {{ extjs('jquery-easy-pie-chart/jquery.easy-pie-chart.js') }}
+    {{ js('jquery.sparkline.js') }}
+    {{ extjs('chart-master/Chart.js') }}
+
+   <!--common script for all pages-->
+
+   <script type="text/javascript" src="{{ asset_url()~'jsapp/stdfunctions.js' }}"></script>
+   {{ js('common-scripts.js') }}
+    {% block jscode %}
+    {% endblock %}
+   <!-- END JAVASCRIPTS -->   
+</body>
+<!-- END BODY -->
+</html>

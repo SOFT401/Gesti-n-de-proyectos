@@ -1,0 +1,157 @@
+{% extends '_layouts/login.twig' %} 
+{% block content %} 
+    {% if login_by_username and login_by_email %} 
+        {% set logintitle=lang('auth_logwithusernameormail') %} 
+    {% elseif login_by_username %} 
+        {% set logintitle=lang('auth_email_in_use') %} 
+    {% elseif auth_logwithemail %} 
+        {% set logintitle=lang('auth_email_in_use') %} 
+    {% endif %}
+    {% if errors is iterable  and errors|length > 0 %}
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ lang('error') }}</strong>
+            {% for error in errors %}
+                {{ error }}<br/>
+            {% endfor %}
+        </div>
+        <div class="alert alert-error">
+            <button data-dismiss="alert" class="close">×</button>
+            <strong>{{ lang('error') }}</strong>
+            {% for error in errors %}
+                {{ error }}<br/>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="login-wrap">
+        <div class="metro single-size red">
+            <div class="locked">
+                <i class="icon-lock"></i>
+                <span>{{ lang('auth_login') }}</span>
+            </div>
+        </div>
+        <form id="formlogin" class="form-horizontal" action="{{ current_url() }}"  method="post">
+        <div class="metro double-size green">
+                <div class="input-append lock-input">
+                    <input type="text" class="" name="username" id="username" placeholder="{{ logintitle }}">
+                </div>
+        </div>
+        <div class="metro double-size yellow">
+                <div class="input-append lock-input">
+                    <input type="password" class="" name="password" id="password" placeholder="{{ lang('auth_password') }}">
+                </div>
+        </div>
+        <div class="metro single-size terques login">
+                <button type="submit" class="btn login-btn">
+                    {{ lang('auth_login') }}
+                    <i class=" icon-long-arrow-right"></i>
+                </button>
+        </div>
+        {% if show_captcha %} 
+            {% if use_recaptcha %}
+                <div class="metro double-size yellow" id="recaptcha_image">
+                    
+                </div>
+                <div class="metro single-size terques" >
+                    <a href="javascript:Recaptcha.reload()">{{ lang('auth_getanother_captcha') }}</a>
+                    <div class="recaptcha_only_if_image">
+                        <a href="javascript:Recaptcha.switch_type('audio')">{{ lang('auth_getaudio_captcha') }}</a>
+                    </div>
+                    <div class="recaptcha_only_if_audio">
+                        <a href="javascript:Recaptcha.switch_type('image')">{{ lang('auth_getimage_captcha') }}</a>
+                    </div>
+                </div>
+                <div class="metro single-size yellow">
+                    <span class="recaptcha_only_if_image">{{ lang('auth_enterimage_captcha') }}</span> 
+                    <span class="recaptcha_only_if_audio">{{ lang('auth_enteraudio_captcha') }}</span>
+                </div>
+                <div class="metro single-size yellow">
+                    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" /> 
+                    <span class="red"></span> 
+                    {{ recaptcha_html }}
+                </div>
+            {% else %}
+                <div class="metro double-size yellow">
+                    <span>{{ lang('auth_confirmcode') }}</span> {{ captcha_html }}
+                </div>
+                <div class="metro double-size yellow">
+                    <input type="text" class="" name="captcha" id="captcha" placeholder="{{ lang('auth_confirmcode') }}">
+                    <span class="red"></span>
+                </div>
+            {% endif %} 
+        {% endif %}
+        <div class="metro double-size navy-blue ">
+            <a href="index.html" class="social-link">
+                <i class="icon-facebook-sign"></i>
+                <span>Facebook Login</span>
+            </a>
+        </div>
+        <div class="metro single-size deep-red">
+            <a href="index.html" class="social-link">
+                <i class="icon-google-plus-sign"></i>
+                <span>Google Login</span>
+            </a>
+        </div>
+        <div class="metro double-size blue">
+            <a href="index.html" class="social-link">
+                <i class="icon-twitter-sign"></i>
+                <span>Twitter Login</span>
+            </a>
+        </div>
+        <div class="metro single-size purple">
+            <a href="index.html" class="social-link">
+                <i class="icon-skype"></i>
+                <span>Skype Login</span>
+            </a>
+        </div>
+        <div class="login-footer">
+            <div class="remember-hint pull-left">
+                <input type="checkbox" name="rememberme" id="remember"> {{ lang('auth_rememberme') }}
+            </div>
+            <div class="forgot-hint pull-right">
+                {{ anchor('/user/forgot_password/',lang('auth_forgot_pass')) }} 
+                {% if config.tank_auth.allow_registration %} 
+                    | {{ anchor('/user/register/',lang('auth_register')) }} 
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block jscode %}
+<script type="text/javascript">
+$().ready(function(){
+    $('#formlogin').validate({
+        rules:{
+            username: {
+                required: true,
+                minlength:2,
+            },
+            password:{
+                required: true,
+                minlength:2,
+            },
+            {% if use_recaptcha %}
+                recaptcha_response_field: "required",
+            {% elseif show_captcha %}
+                captcha: "required",
+            {% endif %}
+        },
+        messages:{
+            username: {
+                required: "{{ lang('auth_required') }}",
+                minlength:"{{ lang('auth_tooshort') }}"
+                },
+            },
+            password:{
+                required: "{{ lang('auth_required') }}",
+                minlength: "{{ lang('auth_tooshort') }}",
+            },
+            {% if use_recaptcha %}
+                recaptcha_response_field: "{{ lang('auth_required') }}",
+            {% elseif show_captcha %}
+                captcha: "{{ lang('auth_required') }}",
+            {% endif %}
+    });
+});
+</script>
+{% endblock %}

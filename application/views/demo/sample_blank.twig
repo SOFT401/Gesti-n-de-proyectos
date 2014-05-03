@@ -1,0 +1,50 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">Sample Pages</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Blank
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Blank{% endblock %}
+{% block content %}
+<div class="row-fluid">
+     <div class="span12">
+         <!-- BEGIN BLANK PAGE PORTLET-->
+         <div class="widget red">
+             <div class="widget-title">
+                 <h4><i class="icon-edit"></i> Blank Page </h4>
+               <span class="tools">
+                   <a href="javascript:;" class="icon-chevron-down"></a>
+                   <a href="javascript:;" class="icon-remove"></a>
+               </span>
+             </div>
+             <div class="widget-body">
+                 Blank page sample
+             </div>
+         </div>
+         <!-- END BLANK PAGE PORTLET-->
+     </div>
+ </div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+
+{% endblock %}

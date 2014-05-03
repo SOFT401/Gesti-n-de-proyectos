@@ -1,0 +1,195 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('nestable/jquery.nestable.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">UI Elements</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Nestable
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Nestable{% endblock %}
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="margin-bottom-10 pull-right" id="nestable_list_menu">
+            <button type="button" class="btn btn-success" data-action="expand-all">Expand All</button>
+            <button type="button" class="btn btn-warning" data-action="collapse-all">Collapse All</button>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <h3>Serialised Output (per list)</h3>
+        <div class="row-fluid">
+            <div class="span6">
+                <textarea id="nestable_list_1_output" class="m-wrap span12"></textarea>
+            </div>
+            <div class="span6">
+                <textarea id="nestable_list_2_output" class="m-wrap span12"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6">
+        <div class="widget green">
+            <div class="widget-title">
+                <h4><i class="icon-align-left"></i> Nestable List 1</h4>
+                <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+               </span>
+            </div>
+            <div class="widget-body">
+                <div class="dd" id="nestable_list_1">
+                    <ol class="dd-list">
+                        <li class="dd-item" data-id="1">
+                            <div class="dd-handle">Item 1</div>
+                        </li>
+                        <li class="dd-item" data-id="2">
+                            <div class="dd-handle">Item 2</div>
+                            <ol class="dd-list">
+                                <li class="dd-item" data-id="3">
+                                    <div class="dd-handle">Item 3</div>
+                                </li>
+                                <li class="dd-item" data-id="4">
+                                    <div class="dd-handle">Item 4</div>
+                                </li>
+                                <li class="dd-item" data-id="5">
+                                    <div class="dd-handle">Item 5</div>
+                                    <ol class="dd-list">
+                                        <li class="dd-item" data-id="6">
+                                            <div class="dd-handle">Item 6</div>
+                                        </li>
+                                        <li class="dd-item" data-id="7">
+                                            <div class="dd-handle">Item 7</div>
+                                        </li>
+                                        <li class="dd-item" data-id="8">
+                                            <div class="dd-handle">Item 8</div>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li class="dd-item" data-id="9">
+                                    <div class="dd-handle">Item 9</div>
+                                </li>
+                                <li class="dd-item" data-id="10">
+                                    <div class="dd-handle">Item 10</div>
+                                </li>
+                            </ol>
+                        </li>
+                        <li class="dd-item" data-id="11">
+                            <div class="dd-handle">Item 11</div>
+                        </li>
+                        <li class="dd-item" data-id="12">
+                            <div class="dd-handle">Item 12</div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="widget purple">
+            <div class="widget-title">
+                <h4><i class="icon-align-left"></i> Nestable List 2</h4>
+                <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+               </span>
+            </div>
+            <div class="widget-body">
+                <div class="dd" id="nestable_list_2">
+                    <ol class="dd-list">
+                        <li class="dd-item" data-id="13">
+                            <div class="dd-handle">Item 13</div>
+                        </li>
+                        <li class="dd-item" data-id="14">
+                            <div class="dd-handle">Item 14</div>
+                        </li>
+                        <li class="dd-item" data-id="15">
+                            <div class="dd-handle">Item 15</div>
+                            <ol class="dd-list">
+                                <li class="dd-item" data-id="16">
+                                    <div class="dd-handle">Item 16</div>
+                                </li>
+                                <li class="dd-item" data-id="17">
+                                    <div class="dd-handle">Item 17</div>
+                                </li>
+                                <li class="dd-item" data-id="18">
+                                    <div class="dd-handle">Item 18</div>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget red">
+            <div class="widget-title">
+                <h4><i class="icon-align-left"></i> Nestable List 3</h4>
+                <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+               </span>
+            </div>
+            <div class="widget-body">
+                <div class="dd" id="nestable_list_3">
+                    <ol class="dd-list">
+                        <li class="dd-item dd3-item" data-id="13">
+                            <div class="dd-handle dd3-handle"></div>
+                            <div class="dd3-content">Item 13</div>
+                        </li>
+                        <li class="dd-item dd3-item" data-id="14">
+                            <div class="dd-handle dd3-handle"></div>
+                            <div class="dd3-content">Item 14</div>
+                        </li>
+                        <li class="dd-item dd3-item" data-id="15">
+                            <div class="dd-handle dd3-handle"></div>
+                            <div class="dd3-content">Item 15</div>
+                            <ol class="dd-list">
+                                <li class="dd-item dd3-item" data-id="16">
+                                    <div class="dd-handle dd3-handle"></div>
+                                    <div class="dd3-content">Item 16</div>
+                                </li>
+                                <li class="dd-item dd3-item" data-id="17">
+                                    <div class="dd-handle dd3-handle"></div>
+                                    <div class="dd3-content">Item 17</div>
+                                </li>
+                                <li class="dd-item dd3-item" data-id="18">
+                                    <div class="dd-handle dd3-handle"></div>
+                                    <div class="dd3-content">Item 18</div>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ extjs('nestable/jquery.nestable.js') }}
+{{ js('nestable.js') }}
+{% endblock %}

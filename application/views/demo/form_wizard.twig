@@ -1,0 +1,299 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('fancybox/source/jquery.fancybox.css') }}
+{{ extcss('uniform/css/uniform.default.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">Form Stuff</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Form Wizard
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Form Wizard{% endblock %}
+{% block content %}
+<div class="row-fluid">
+     <div class="span12">
+         <div class="widget box green">
+             <div class="widget-title">
+                 <h4>
+                     <i class="icon-reorder"></i> Wizard With Progress Bar Step 1 of Step 4
+                 </h4>
+            <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+            </span>
+             </div>
+             <div class="widget-body">
+                 <form class="form-horizontal" action="#">
+                    <div id="pills" class="custom-wizard-pills">
+                     <ul>
+                         <li><a href="#pills-tab1" data-toggle="tab">Step 1</a></li>
+                         <li><a href="#pills-tab2" data-toggle="tab">Step 2</a></li>
+                         <li><a href="#pills-tab3" data-toggle="tab">Step 3</a></li>
+                         <li><a href="#pills-tab4" data-toggle="tab">Step 4</a></li>
+                     </ul>
+                     <div class="progress progress-success progress-striped active">
+                         <div class="bar"></div>
+                     </div>
+                     <div class="tab-content">
+                         <div class="tab-pane" id="pills-tab1">
+                             <h3>Fill up step 1</h3>
+                             <div class="control-group">
+                                 <label class="control-label">Username</label>
+                                 <div class="controls">
+                                     <input type="text" class="span6">
+                                     <span class="help-inline">Give your username</span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label">Email</label>
+                                 <div class="controls">
+                                     <input type="password" class="span6">
+                                     <span class="help-inline">Give your Email</span>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="tab-pane" id="pills-tab2">
+                             <h3>Fill up step 2</h3>
+                             <div class="control-group">
+                                 <label class="control-label">First Name</label>
+                                 <div class="controls">
+                                     <input type="text" class="span6" />
+                                     <span class="help-inline">Give your First Name</span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label">Last Name</label>
+                                 <div class="controls">
+                                     <input type="text" class="span6" />
+                                     <span class="help-inline">Give your Last Name</span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label">Phone Number</label>
+                                 <div class="controls">
+                                     <input type="text" class="span6" />
+                                     <span class="help-inline">Give your phone number</span>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="tab-pane" id="pills-tab3">
+                             <h3>Fill up step 3</h3>
+                             <div class="control-group">
+                                 <label class="control-label">Text Input</label>
+                                 <div class="controls">
+                                     <input type="text" class="span6" />
+                                     <span class="help-inline"></span>
+                                 </div>
+                             </div>
+
+                             <div class="control-group">
+                                 <label class="control-label">Checkbox and radio Options</label>
+                                 <div class="controls">
+                                     <label class="checkbox line">
+                                         <input type="checkbox" value="" /> Lorem ipsum dolor imti
+                                     </label>
+                                     <label class="radio line">
+                                         <input type="radio" value="" /> Duis autem vel eum iriure dolor in hendrerit
+                                     </label>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="tab-pane" id="pills-tab4">
+                             <h3>Final step</h3>
+                             <div class="control-group">
+                                 <label class="control-label">Fullname:</label>
+                                 <div class="controls">
+                                     <span class="text">Jhon Doe </span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label">Email:</label>
+                                 <div class="controls">
+                                     <span class="text">dkmosa@gmail.com</span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label">Phone:</label>
+                                 <div class="controls">
+                                     <span class="text">123456789</span>
+                                 </div>
+                             </div>
+                             <div class="control-group">
+                                 <label class="control-label"></label>
+                                 <div class="controls">
+                                     <label class="checkbox">
+                                         <input type="checkbox" value="" /> I confirm my steps
+                                     </label>
+                                 </div>
+                             </div>
+                         </div>
+                         <ul class="pager wizard">
+                             <li class="previous first"><a href="javascript:;">First</a></li>
+                             <li class="previous"><a href="javascript:;">Previous</a></li>
+                             <li class="next last"><a href="javascript:;">Last</a></li>
+                             <li class="next"><a  href="javascript:;">Next</a></li>
+                         </ul>
+                     </div>
+                 </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+<!-- END PAGE CONTENT-->
+
+<!-- BEGIN PAGE CONTENT-->
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget box purple">
+            <div class="widget-title">
+                <h4>
+                    <i class="icon-reorder"></i> Wizard With Progress Bar Step 1 of Step 4</span>
+                </h4>
+            <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+            </span>
+            </div>
+            <div class="widget-body">
+                <form class="form-horizontal" action="#">
+                    <div id="tabsleft" class="tabbable tabs-left">
+                    <ul>
+                        <li><a href="#tabsleft-tab1" data-toggle="tab"><span class="strong">Step 1</span> <span class="muted">Personal Details</span></a></li>
+                        <li><a href="#tabsleft-tab2" data-toggle="tab"><span class="strong">Step 2</span> <span class="muted">Billing Details</span></a></a></li>
+                        <li><a href="#tabsleft-tab3" data-toggle="tab"><span class="strong">Step 3</span> <span class="muted">Payment Details</span></a></a></li>
+                        <li><a href="#tabsleft-tab4" data-toggle="tab"><span class="strong">Step 4</span> <span class="muted">Confirmation</span></a></a></li>
+                    </ul>
+                    <div class="progress progress-info progress-striped">
+                        <div class="bar"></div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="tabsleft-tab1">
+                            <h3>Fill up step 1</h3>
+                            <div class="control-group">
+                                <label class="control-label">Username</label>
+                                <div class="controls">
+                                    <input type="text" class="span6">
+                                    <span class="help-inline">Give your username</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Email</label>
+                                <div class="controls">
+                                    <input type="password" class="span6">
+                                    <span class="help-inline">Give your Email</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabsleft-tab2">
+                            <h3>Fill up step 2</h3>
+                            <div class="control-group">
+                                <label class="control-label">Billing Name</label>
+                                <div class="controls">
+                                    <input type="text" class="span6">
+                                    <span class="help-inline">Give your Billing Name</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Billing Details</label>
+                                <div class="controls">
+                                    <input type="password" class="span6">
+                                    <span class="help-inline">Give your Billing Details</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabsleft-tab3">
+                            <h3>Fill up step 3</h3>
+                            <div class="control-group">
+                                <label class="control-label">Text Input</label>
+                                <div class="controls">
+                                    <input type="text" class="span6" />
+                                    <span class="help-inline"></span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Checkbox and radio Options</label>
+                                <div class="controls">
+                                    <label class="checkbox line">
+                                        <input type="checkbox" value="" /> Lorem ipsum dolor imti
+                                    </label>
+                                    <label class="radio line">
+                                        <input type="radio" value="" /> Duis autem vel eum iriure dolor in hendrerit
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabsleft-tab4">
+                            <h3>Final step</h3>
+                            <div class="control-group">
+                                <label class="control-label">Fullname:</label>
+                                <div class="controls">
+                                    <span class="text">Jhon Doe </span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Email:</label>
+                                <div class="controls">
+                                    <span class="text">dkmosa@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Phone:</label>
+                                <div class="controls">
+                                    <span class="text">123456789</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label"></label>
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" value="" /> I confirm my steps
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="pager wizard">
+                            <li class="previous first"><a href="javascript:;">First</a></li>
+                            <li class="previous"><a href="javascript:;">Previous</a></li>
+                            <li class="next last"><a href="javascript:;">Last</a></li>
+                            <li class="next"><a href="javascript:;">Next</a></li>
+                            <li class="next finish" style="display:none;"><a href="javascript:;">Finish</a></li>
+                        </ul>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ extjs('bootstrap-wizard/jquery.bootstrap.wizard.min.js') }}
+{{ js('jquery.blockui.js') }}
+{{ extjs('chosen-bootstrap/chosen/chosen.jquery.min.js') }}
+{{ extjs('uniform/jquery.uniform.min.js') }}
+{{ js('form-wizard.js') }}
+<script>
+   $(function () {
+       $(" input[type=radio], input[type=checkbox]").uniform();
+   });
+</script>
+{% endblock %}

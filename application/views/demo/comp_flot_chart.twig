@@ -1,0 +1,215 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('fullcalendar/fullcalendar/bootstrap-fullcalendar.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">Components</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Flot Chart
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Flot Chart{% endblock %}
+{% block content %}
+<div id="page-wraper">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-title">
+                    <h4><i class="icon-bar-chart"></i> Statistics </h4>
+               <span class="tools">
+                   <a href="javascript:;" class="icon-chevron-down"></a>
+                   <a href="javascript:;" class="icon-remove"></a>
+               </span>
+                </div>
+                <div class="widget-body" style="width: 96%">
+                    <div class="plots"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- BEGIN TRACKING CURVES PORTLET-->
+            <div class="widget purple">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Tracking Chart</h4>
+				<span class="tools">
+				<a href="javascript:;" class="icon-chevron-down"></a>
+                <a href="javascript:;" class="icon-remove"></a>
+				</span>
+                </div>
+                <div class="widget-body">
+                    <div id="chart-1" class="chart"></div>
+                </div>
+            </div>
+            <!-- END TRACKING CURVES PORTLET-->
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6">
+            <!-- BEGIN BASIC CHART PORTLET-->
+            <div class="widget orange">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Selection Chart</h4>
+				<span class="tools">
+				<a href="javascript:;" class="icon-chevron-down"></a>
+                <a href="javascript:;" class="icon-remove"></a>
+				</span>
+                </div>
+                <div class="widget-body">
+                    <div id="chart-2" class="chart"></div>
+                </div>
+            </div>
+            <!-- END BASIC CHART PORTLET-->
+        </div>
+        <div class="span6">
+            <!-- BEGIN INTERACTIVE CHART PORTLET-->
+            <div class="widget green">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Live Chart</h4>
+				<span class="tools">
+				<a href="javascript:;" class="icon-chevron-down"></a>
+                <a href="javascript:;" class="icon-remove"></a>
+				</span>
+                </div>
+                <div class="widget-body">
+                    <div id="chart-3" class="chart"></div>
+                </div>
+            </div>
+            <!-- END INTERACTIVE CHART PORTLET-->
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6">
+            <!-- BEGIN DYNAMIC CHART PORTLET-->
+            <div class="widget yellow">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Support Chart</h4>
+                        <span class="tools">
+                        <a href="javascript:;" class="icon-chevron-down"></a>
+                        <a href="javascript:;" class="icon-remove"></a>
+                        </span>
+                </div>
+                <div class="widget-body">
+                    <div id="chart-4" class="chart"></div>
+                </div>
+            </div>
+            <!-- END DYNAMIC CHART PORTLET-->
+        </div>
+        <div class="span6">
+            <!-- BEGIN Bar Chat PORTLET-->
+            <div class="widget blue">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Bar Chat</h4>
+				<span class="tools">
+				<a href="javascript:;" class="icon-chevron-down"></a>
+                <a href="javascript:;" class="icon-remove"></a>
+				</span>
+                </div>
+                <div class="widget-body">
+                    <div id="chart-5" style="height:350px;"></div>
+                    <div class="btn-toolbar">
+                        <div class="btn-group stackControls">
+                            <input type="button" class="btn btn-info" value="With stacking" />
+                            <input type="button" class="btn btn-danger" value="Without stacking" />
+                        </div>
+                        <div class="space5"></div>
+                        <div class="btn-group graphControls">
+                            <input type="button" class="btn" value="Bars" />
+                            <input type="button" class="btn" value="Lines" />
+                            <input type="button" class="btn" value="Lines with steps" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Bar Chat PORTLET-->
+        </div>
+    </div>
+
+
+    <!-- BEGIN PIE CHART PORTLET-->
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="widget red">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Pie Chart</h4>
+						<span class="tools">
+						<a href="javascript:;" class="icon-chevron-down"></a>
+                        <a href="javascript:;" class="icon-remove"></a>
+						</span>
+                </div>
+                <div class="widget-body">
+                    <div id="graph1" class="chart"></div>
+                </div>
+            </div>
+            <div class="widget green">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Pie Chart</h4>
+						<span class="tools">
+						<a href="javascript:;" class="icon-chevron-down"></a>
+                        <a href="javascript:;" class="icon-remove"></a>
+						</span>
+                </div>
+                <div class="widget-body">
+                    <div id="graph2" class="chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="widget">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Pie Chart</h4>
+						<span class="tools">
+						<a href="javascript:;" class="icon-chevron-down"></a>
+                        <a href="javascript:;" class="icon-remove"></a>
+						</span>
+                </div>
+                <div class="widget-body">
+                    <div id="graph3" class="chart"></div>
+                </div>
+            </div>
+            <div class="widget purple">
+                <div class="widget-title">
+                    <h4><i class="icon-reorder"></i> Donut Chart</h4>
+						<span class="tools">
+						<a href="javascript:;" class="icon-chevron-down"></a>
+                        <a href="javascript:;" class="icon-remove"></a>
+						</span>
+                </div>
+                <div class="widget-body">
+                    <div id="donut" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PIE CHART PORTLET-->
+</div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ extjs('flot/jquery.flot.js') }}
+{{ extjs('flot/jquery.flot.resize.js') }}
+{{ extjs('flot/jquery.flot.pie.js') }}
+{{ extjs('flot/jquery.flot.stack.js') }}
+{{ extjs('flot/jquery.flot.crosshair.js') }}
+{{ js('flot-chart.js') }}
+{{ js('custom-flot-chart.js') }}
+{% endblock %}

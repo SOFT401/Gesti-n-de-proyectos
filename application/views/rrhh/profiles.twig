@@ -1,0 +1,261 @@
+{% extends '_layouts/index.twig' %}
+
+{% block headext %}
+    {{ extcss('chosen-bootstrap/chosen/chosen.css') }}
+    <style type="text/css" media="screen">
+	.dataTable .sorting_asc b{
+	    width:15px;
+	    height:15px;
+	    display:inline-block;
+	    float:right;
+	    background: url('{{ img_url() }}chosen-sprite.png') no-repeat 0 0;
+	}
+	.dataTable .sorting_desc b{
+	    width:15px;
+	    height:15px;
+	    display:inline-block;
+	    float:right;
+	    background: url('{{ img_url() }}chosen-sprite.png') no-repeat -18px 1px;
+	}
+    </style>
+{% endblock %}	
+{% block breadcrumb %}{{ nav.breadcrumb(breadcrumb) }}{% endblock %}
+{% block content %}
+{% import '_tools/formElements.twig' as forms %}
+<div class="row-fluid ">
+    <div class="widget span12">
+        <div class="widget-title" data-original-title>
+            <h4><i class="icon-{{ icon }}"></i> {{ title }}</h4>
+            <span class="tools">
+                <a class="icon-chevron-down" href="javascript:;"></a>
+                <a class="icon-plus resetform" href="javascript:;"></a>
+            </span>
+        </div>
+        <div class="widget-body">
+            <div class="widget-form" style="display:none;">
+	            <form id="formulario" class="form-horizontal" method="post" autocomplete="{% if noauto %}off{% endif %}">
+	                <fieldset>
+	                    {% for campo in campos%}
+	                        {{ forms.campo(campo) }}
+	                    {% endfor %}
+	                </fieldset>
+	                <div class="form-actions">
+	                    <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+	                    <button class="btn formcancelar">{{ lang('cancel') }}</button>
+	                </div>
+	            </form>
+            </div>
+	        <table class="table table-striped table-bordered bootstrap-datatable tabledata" style="width:100%;">
+		        <thead>
+		          <tr>
+		          {% if hasactions %} <th data-priority="persistent">{{ lang('actions') }}<b></b></th>{% endif %}
+		          {% for colheader in headers %}
+		              <th>
+		                  <abbr title="{% if colheader.abbr %} {{ colheader.abbr }} {% endif %}">{{ colheader.valor }}</abbr><b></b>
+		              </th>
+		          {% endfor %}
+		          </tr>
+		        </thead>
+		        <tbody>
+		        </tbody>
+		  </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jscode %}
+{{ js('jquery.validate.min.js') }}
+{{ js('jquery.validate.password.js') }}
+{{ extjs('chosen-bootstrap/chosen/chosen.jquery.min.js') }}
+{{ extjs('data-tables/jquery.dataTables.js') }}
+{{ extjs('data-tables/DT_bootstrap.js') }}
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+    $('.resetform').click(function(){
+        resetForm($(this).closest('.widget-form').find('form'));
+        $(this).closest('.widget').find('.widget-form').find('form').find('input[name=id]').val(0);
+    });
+    {% if jsCode is defined %}
+        {{ jsCode|raw }}
+    {% endif %}
+    $('#formulario').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        ignore:':hidden.chzn',
+        {% if reglas|length > 0  %}
+            rules : {
+                {% for key,value in reglas %}
+                {{ key }} : {
+                    {% for keyr,valr in value %}
+                        {% if valr.val %}{{ keyr }} :{% if(valr.istring)%}'{%endif%}{% if keyr=='remote'%}{{ valr.route }}{% endif %}{{ valr.val }}{% if(valr.istring)%}'{%endif%},
+                        {% endif %}
+                    {% endfor %}
+                    },
+                {% endfor %}
+            },
+            messages : {
+                {% for key,value in reglas %}
+                {{ key }}:{
+                    {% for keyr,valr in value %}
+                        {% if valr.msj %}
+                            {{ keyr }} : '{{ valr.msj }}',
+                        {% endif %}
+                    {% endfor %}
+                    },
+                {% endfor %}
+            },
+        {% endif %}
+        {% if edithere %}
+	        submitHandler: function(form) {
+	    		$.ajax({
+	                type:"POST",
+	                url: '{{ site_url(urledt) }}',
+	                dataType:'json',
+	                data: $(form).serializeObject(),
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					{% if submithandler %}
+					   {{ submithandler|raw }}
+					{% endif %}
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('.formcancelar').trigger('click');
+					resetForm($('#formulario'));
+					$('#formulario').find('input[name=id]').val(0);
+					loadData();
+				});
+	    	}
+        {% endif %}
+    });
+    $('[data-rel="chosen"],[rel="chosen"]').chosen({"no_results_text":"{{ lang('noresults') }}",disable_search_threshold: 10});
+    
+    var tabledata = $('.tabledata').dataTable({
+        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'row-fluid'<'span12 center'p>>",
+        "sPaginationType": "bootstrap",
+        "oLanguage": {
+            "sProcessing": "{{ lang('table_processing') }}",
+            "sLengthMenu": "{{ lang('table_recordsperpage') }}",
+            "sZeroRecords": "{{ lang('table_noregisters') }}",
+            "sEmptyTable": "{{ lang('table_empty') }}",
+            "sInfo": "{{ lang('table_pager') }}",
+            "sInfoEmpty": "{{ lang('table_pagerempty') }}",
+            "sInfoFiltered": "{{ lang('table_filtered') }}",
+            "sSearch": "{{ lang('table_search') }}",
+            "sLoadingRecords": "{{ lang('table_loading') }}",
+            "oAria": {
+                "sSortAscending": "{{ lang('table_sortAsc') }}",
+                "sSortDescending": "{{ lang('table_sortDesc') }}",
+            },
+            "oPaginate": {
+                "sFirst": "{{ lang('table_first') }}",
+                "sLast": "{{ lang('table_last') }}",
+                "sNext": "{{ lang('table_next') }}",
+                "sPrevious": "{{ lang('table_previous') }}",
+            },
+        }
+    });
+    function okDelete(data) {
+    	console.log(data);
+    	$.ajax({
+        	type:"POST",
+            url: '{{ site_url(urldel) }}',
+            dataType:'json',
+            data:data,
+            error:function (jqXHR, textStatus, errorThrown) {
+            	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+            }
+            }).done(function(data){
+				console.log(data);
+				if (data.notify){
+					notify({'msj':data.msj,'type':data.notytype})
+				}
+            	loadData();
+            });
+    }
+    $('.formcancelar').on('click',function(){
+        resetForm($(this).closest('form'));
+        $(this).closest('form').find('input[name=id]').val(0);
+        $(this).closest('.widget').find('.widget-form').slideUp();
+    });
+    function loadData(){
+        $.ajax({
+        	type:"POST",
+            url: '{{ site_url(urlgetData) }}',
+            dataType:'json',
+            error:function (jqXHR, textStatus, errorThrown) {
+            	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+            }
+            }).done(function(data){
+                tabledata.fnClearTable();
+            	for (key in data.data){
+            	    {% if hasactions %}
+            	      htmledit='';
+	                  {% if canedit %}
+	                      htmledit+= '<a class="btn btn-info edit_register" data-id="'+data.data[key].id+'" href="javascript:void()"><i class="icon-edit icon-white" title="{{ lang('edit') }}"></i></a>';
+	                  {% endif %}
+	                  {% if candel %}
+	                      htmledit+= '<a class="btn btn-info delete_register" data-id="'+data.data[key].id+'" href="javascript:void()"><i class="icon-trash icon-white" title="{{ lang('delete') }}"></i></a>';
+	                  {% endif %}
+	              {% endif %}
+	              row= Array();
+	              row[0]=htmledit;
+	              cont=1;
+	              {% for keycol,col in headers %}
+                      row[cont]=data.data[key].{{ keycol }};
+                      cont++;
+                  {% endfor %}
+                  tabledata.fnAddData( row );
+            	}
+            	$('select#scarea').trigger("liszt:updated");
+				dom_tabledata();
+				tabledata.fnDraw();
+        });
+    }
+    function dom_tabledata(){
+        $('.edit_register').on('click',function(){
+            {% if edithere %}
+                $.ajax({
+                	type:"POST",
+                    url: '{{ site_url(urlgetDato) }}',
+                    dataType:'json',
+                    data:{id:$(this).attr('data-id')},
+                    error:function (jqXHR, textStatus, errorThrown) {
+                    	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                    }
+                    }).done(function(data){
+                        $('#formulario').closest('.widget').find('.icon-plus').trigger('click');
+                        {% for campo in campos %}
+	                        {% if campo.tipo=='input' %}
+	                        $('#formulario').find('input[name={{ campo.name }}]').val(data.data.{{ campo.name }});
+	                        {% elseif campo.tipo=='select' %}
+	                        $('#formulario').find('select[name={{ campo.name }}]').find('option').removeAttr("selected");
+	                        $('#formulario').find('select[name={{ campo.name }}]').find('option[value='+data.data.{{ campo.name }}+']').attr("selected",true);
+	                        $('#formulario').find('select[name={{ campo.name }}]').trigger("liszt:updated");
+	                        {% endif %}
+                        {% endfor %}
+                    });
+    	    {% else %}
+    	        window.location.href = "{{ urledt }}/"+$(this).attr('data-id');
+    	    {% endif %}
+        });
+        $('.delete_register').on('click',function(){
+            {% if delajax %}
+                var id = $(this).attr('data-id');
+                if (typeof id != "undefined") {
+                    confirmDel('center', '{{ lang('confirm') }}', '{{ lang('cancel') }}', '{{ lang('confirmdelete') }}',{id:id}, '{{ urldel }}', okDelete);
+                };
+            {% else %}
+                window.location.href = "{{ urldel }}/"+$(this).attr('data-id');
+            {% endif %}
+        });
+    }
+    loadData();
+});
+//]]>
+</script>
+{% endblock %}

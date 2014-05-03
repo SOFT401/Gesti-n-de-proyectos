@@ -1,0 +1,51 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('dropzone/css/dropzone.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">Form Stuff</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Dropzone File Upload
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Dropzone File Upload{% endblock %}
+{% block content %}
+<div class="row-fluid">
+                <div class="span12">
+                    <!-- BEGIN SAMPLE FORMPORTLET-->
+                    <div class="widget red">
+                        <div class="widget-title">
+                            <h4><i class="icon-asterisk"></i> Dropzone File Upload</h4>
+                            <span class="tools">
+                            <a href="javascript:;" class="icon-chevron-down"></a>
+                            <a href="javascript:;" class="icon-remove"></a>
+                            </span>
+                        </div>
+                        <div class="widget-body form">
+                            <form action="http://thevectorlab.net/metrolab/assets/dropzone/upload.php" class="dropzone" id="my-awesome-dropzone"></form>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE FORM PORTLET-->
+                </div>
+            </div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ js('jquery.blockui.js') }}
+{{ extjs('dropzone/dropzone.js') }}
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('fullcalendar/fullcalendar/bootstrap-fullcalendar.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">Components</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Calendar
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Calendar{% endblock %}
+{% block content %}
+ <div class="row-fluid">
+    <div class="span3">
+        <div class="widget green">
+            <div class="widget-title">
+                <h4><i class="icon-calendar"></i> Draggable Events</h4>
+            </div>
+            <div class="widget-body">
+                <div id='external-events'>
+                    <div class='external-event label'>My Event 1</div>
+                    <div class='external-event label'>My Event 2</div>
+                    <div class='external-event label'>My Event 3</div>
+                    <div class='external-event label'>My Event 4</div>
+                    <div class='external-event label'>My Event 5</div>
+                    <div class='external-event label'>My Event 6</div>
+                    <div class='external-event label'>My Event 7</div>
+                    <div class='external-event label'>My Event 8</div>
+                    <div class='external-event label'>My Event 9</div>
+                    <div class='external-event label'>My Event 10</div>
+                    <p>
+                        <input type='checkbox' id='drop-remove' />
+                        remove after drop
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9 responsive" data-tablet="span9 fix-margin" data-desktop="span9">
+        <!-- BEGIN CALENDAR PORTLET-->
+        <div class="widget yellow">
+            <div class="widget-title">
+                <h4><i class="icon-calendar"></i> Calendar</h4>
+                <span class="tools">
+                    <a href="javascript:;" class="icon-chevron-down"></a>
+                    <a href="javascript:;" class="icon-remove"></a>
+                </span>
+            </div>
+            <div class="widget-body">
+                <div id="calendar" class="has-toolbar"></div>
+            </div>
+        </div>
+        <!-- END CALENDAR PORTLET-->
+    </div>
+</div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ extjs('fullcalendar/fullcalendar/fullcalendar.min.js') }}
+{{ extjs('bootstrap/js/bootstrap.min.js') }}
+{{ js('external-dragging-calendar.js') }}
+{% endblock %}

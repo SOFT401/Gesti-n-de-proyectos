@@ -1,0 +1,9 @@
+[submodule "application/third_party/Twig"]
+	path = application/third_party/Twig
+	url = git@github.com:fabpot/Twig.git
+[submodule "application/third_party/tcpdf"]
+	path = application/third_party/tcpdf
+	url = git@github.com:tcpdf-clone/tcpdf.git
+[submodule "assets/ext/elFinder"]
+	path = assets/ext/elFinder
+	url = git@github.com:Studio-42/elFinder.git

@@ -1,0 +1,45 @@
+{% macro leftmenu(items) %}
+    {% for keyitem,item in items %}
+        <li class="sub-menu {% if item.active %} active {% endif %}">
+        {% if item.options %}
+            <a href="javascript:;" class="">
+                {% if item.icon %}
+                    <i class="icon-{{ item.icon }}"></i>
+                {% endif %}
+                <span>{{ lang(keyitem) }}</span>
+                <span class="arrow"></span>
+            </a>
+            <ul class="sub">
+                {% for keysub,itemsub in item.options %}
+                    <li {% if  itemsub.active %} class="active" {% endif %}>
+                        <a class="" href="{{ site_url(itemsub.url) }}">
+                        {% if itemsub.icon %}
+                            <i class="icon-{{ itemsub.icon }}"></i>
+                        {% endif %}
+                        <span>{{ lang(itemsub.label) }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <a class="" href="{{ site_url(item.url) }}">
+                {% if item.icon %}
+                    <i class="icon-{{ item.icon }}"></i>
+                {% endif %}
+                <span>{{ item.label }}</span>
+            </a>
+        {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+{% macro breadcrumb(items) %}
+    {% for item in items %}
+        <li {% if loop.last %}class="active"{% endif %}>{% if not loop.first %}<span class="divider">/</span>{% endif %}
+        {% if loop.last%}
+            {{ item.label }}
+        {% else %}
+            <a href="{{ item.link }}">{{ item.label }}</a>
+        {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}

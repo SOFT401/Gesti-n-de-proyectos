@@ -1,0 +1,203 @@
+{% extends '_layouts/demo.twig' %}
+{% block headext %}
+{{ extcss('bootstrap-tree/bootstrap-tree/css/bootstrap-tree.css') }}
+{% endblock %}
+{% block breadcrumb %}
+<li>
+   <a href="#">Home</a>
+   <span class="divider">/</span>
+</li>
+<li>
+   <a href="#">UI Elements</a>
+   <span class="divider">/</span>
+</li>
+<li class="active">
+   Tree View
+</li>
+<li class="pull-right search-wrap">
+   <form action="http://thevectorlab.net/metrolab/search_result.html" class="hidden-phone">
+       <div class="input-append search-input-area">
+           <input class="" id="appendedInputButton" type="text">
+           <button class="btn" type="button"><i class="icon-search"></i> </button>
+       </div>
+   </form>
+</li>
+{% endblock %}
+{% block pagetitle %}Tree View{% endblock %}
+{% block content %}
+<div class="row-fluid">
+    <div class="span6">
+        <div class="widget green">
+            <div class="widget-title">
+                <h4><i class=" icon-indent-left"></i> Inline Tree</h4>
+               <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+               </span>
+            </div>
+            <div class="widget-body">
+                <div class="actions">
+                    <a class="btn btn-small btn-success" id="tree_1_collapse" href="javascript:;"> Collapse All</a>
+                    <a class="btn btn-small btn-warning" id="tree_1_expand" href="javascript:;"> Expand All</a>
+                </div>
+                <div class="space10"></div>
+                <ul id="tree_1" class="tree">
+                    <li>
+                        <a data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle" data-role="branch" href="#">
+                            Bootstrap Tree
+                        </a>
+                        <ul class="branch in">
+                            <li>
+                                <a id="nut1" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle" href="#">
+                                    Documents
+                                </a>
+                                <ul class="branch in">
+                                    <li>
+                                        <a id="nut2" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle closed" href="#">
+                                            Finance
+                                        </a>
+                                        <ul class="branch">
+                                            <li><a data-role="leaf" href="#"><i class="icon-book"></i> Sale Revenue</a></li>
+                                            <li><a data-role="leaf" href="#"><i class="icon-fire"></i> Promotions</a></li>
+                                            <li><a data-role="leaf" href="#"><i class="icon-edit"></i> IPO</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-magic"></i> ICT</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-user"></i> Human Resources</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="nut3" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle closed" href="#">
+                                    Examples
+                                </a>
+                                <ul class="branch">
+                                    <li><a data-role="leaf" href="#"><i class="icon-cloud"></i> Internal</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-user-md"></i> Client Base</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-retweet"></i> Product Base</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="nut4" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle" href="#">
+                                    Tasks
+                                </a>
+                                <ul class="branch in">
+                                    <li><a data-role="leaf" href="#"><i class="icon-suitcase"></i> Internal Projects</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-cloud-download"></i> Outsourcing</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-sitemap"></i> Bug Tracking</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="nut6" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle closed" href="#">
+                                    Customers
+                                </a>
+                                <ul class="branch">
+                                    <li><a data-role="leaf" href="#"><i class="icon-tags"></i> Finance</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-magic"></i> ICT</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-user"></i> Human Resources</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="nut8" data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle closed" href="#">
+                                    Reports
+                                </a>
+                                <ul class="branch">
+                                    <li><a data-role="leaf" href="#"><i class="icon-tags"></i> Finance</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-magic"></i> ICT</a></li>
+                                    <li><a data-role="leaf" href="#"><i class="icon-user"></i> Human Resources</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a data-role="leaf" href="#">
+                                    <i class="icon-share"></i> External Link
+                                </a>
+                            </li>
+                            <li>
+                                <a data-role="leaf" href="#">
+                                    <i class="icon-share"></i> Another External Link
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="widget purple">
+            <div class="widget-title">
+                <h4><i class=" icon-indent-left"></i> Data Sources</h4>
+               <span class="tools">
+               <a href="javascript:;" class="icon-chevron-down"></a>
+               <a href="javascript:;" class="icon-remove"></a>
+               </span>
+            </div>
+            <div class="widget-body">
+                <div class="actions">
+                    <a class="btn btn-small btn-success" id="tree_2_collapse" href="javascript:;"> Collapse All</a>
+                    <a class="btn btn-small btn-warning" id="tree_2_expand" href="javascript:;"> Expand All</a>
+                </div>
+                <div class="space10"></div>
+                <ul id="tree_2" class="tree">
+                    <li>
+                        <a data-value="Bootstrap_Tree" data-toggle="branch" class="tree-toggle" data-role="branch" href="#">Bootstrap Tree
+                        </a>
+                        <ul class="branch in">
+                            <li><a id="nut" data-role="leaf" href="#"><i class=" icon-book"></i> Documents</a></li>
+                            <li><a data-role="leaf" href="#"><i class=" icon-bullhorn"></i> Projects</a></li>
+                            <li><a data-role="leaf" href="#"><i class="icon-tasks"></i> Tasks</a></li>
+                            <li>
+                                <a data-role="leaf"  href="#">
+                                    <i class="icon-share"></i> External Link
+                                </a>
+                            </li>
+                            <li>
+                                <a data-role="leaf"  href="#">
+                                    <i class="icon-share"></i> Another External Link
+                                </a>
+                            </li>
+                            <li>
+                                <a data-value="XML_Example" data-toggle="branch" class="tree-toggle closed" data-role="branch" href="assets/bootstrap-tree/xmlexample.xml">Load data from XML document via Ajax
+                                </a>
+                                <ul class="branch">
+                                    <li><a role="branch" class="tree-toggle closed folder" data-toggle="branch" data-value="number_8" data-itemid="root/number_8" href="#">this branch</a>
+                                        <ul class="branch">
+                                            <li><a role="leaf" data-value="2" data-itemid="root/number_8/wow" href="#"><i class="icon-shopping-cart"></i> Purchase metro lab Today</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a role="branch" class="tree-toggle folder" data-toggle="branch" data-value="number_9" data-itemid="root/number_9" href="#">Check this Out!</a>
+                                        <ul class="branch in">
+                                            <li><a role="leaf" data-value="But metro lab Today" data-itemid="root/number_9/metro lab" href="#"><i class="icon-shopping-cart"></i> Purchase metro lab Today</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a data-value="HTML_Example" data-toggle="branch" class="tree-toggle closed" data-role="branch" href="assets/bootstrap-tree/htmlexample.html">Load data from HTML page via Ajax
+                                </a><ul class="branch"><li><a target="_blank" href="#">Some Link</a></li>
+                                <li><a target="_blank" href="#">Another Link</a></li>
+                                <li>
+                                    <a data-value="GitHub_Repos" data-toggle="branch" class="tree-toggle closed" role="branch" href="#">Some Structure</a>
+                                    <ul class="branch">
+                                        <li><a href="#">Events</a></li>
+                                        <li><a href="#">Users</a></li>
+                                        <li><a href="#">Feedbacks</a></li>
+                                        <li><a href="#">Reports</a></li>
+                                        <li><a href="#">Sales</a></li>
+                                        <li><a href="#">Revenue</a></li>
+                                    </ul>
+                                </li></ul>
+                            </li>
+
+                            <li><a data-value="JSON_Example" data-toggle="branch" class="tree-toggle closed" data-role="branch" href="assets/bootstrap-tree/jsonexample.json">Load data from JSON via Ajax</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}
+{% block jscode %}
+{{ js('tree.js') }}
+{% endblock %}

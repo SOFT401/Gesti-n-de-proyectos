@@ -1,0 +1,28 @@
+{% extends '_layouts/error.twig' %}
+
+{% block content %}
+<body class="error-404">
+    <div class="error-wrap error-wrap-404">
+        <div class="metro big terques">
+           <span> {{ heading }} </span>
+        </div>
+        <div class="metro green">
+            <span> 4 </span>
+        </div>
+        <div class="metro yellow">
+            <span> 0 </span>
+        </div>
+        <div class="metro purple">
+            <span> 4 </span>
+        </div>
+        <div class="metro double red">
+            <span class="page-txt"> {{ message }} </span>
+        </div>
+        <div class="metro gray">
+            <a href="{{ site_url('') }}" class="home"><i class="icon-home"></i> </a>
+        </div>
+
+    </div>
+</body>
+{% endblock %}
+{% block footer %}2013 &copy; Metro Lab Dashboard.{% endblock %}

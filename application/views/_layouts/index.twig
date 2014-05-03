@@ -1,0 +1,246 @@
+{%  set config = get_config() %}
+{%  set CI = get_instance() %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+   <meta charset="utf-8" />
+   <title>{{ config.appname }}</title>
+   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+   <meta content="{{ config.site_description }}" name="description" />
+   <meta content="{{ config.site_author }}" name="author" />
+   {{ extcss('bootstrap/css/bootstrap.min.css') }}
+   {{ extcss('bootstrap/css/bootstrap-responsive.min.css') }}
+   {{ extcss('bootstrap/css/bootstrap-fileupload.css') }}
+   {{ extcss('font-awesome/css/font-awesome.css') }}
+   {{ css('style.css') }}
+   {{ css('style-responsive.css') }}
+   {{ cssapp('general.css') }}
+   <link href="{{ asset_url() }}css/style-default.css" rel="stylesheet" id="style_color" />
+   <link rel="shortcut icon" href="{{ asset_url() }}imgapp/favicon.png">
+   
+   {% block headext %}{% endblock %}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+{% import '_tools/navigation.twig' as nav %}
+<body class="fixed-top">
+   <!-- BEGIN HEADER -->
+   <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+       <!-- BEGIN TOP NAVIGATION BAR -->
+       <div class="navbar-inner">
+           <div class="container-fluid">
+               <!--BEGIN SIDEBAR TOGGLE-->
+               {% set leftmenu = CI.Permissions.get_user_menu(CI.session.userdata('user_id'),CI.session.userdata('context'),'left-bar') %}
+               {% if leftmenu is not empty %}
+               <div class="sidebar-toggle-box hidden-phone">
+                   <div class="icon-reorder"></div>
+               </div>
+               {% endif %}
+               <!--END SIDEBAR TOGGLE-->
+               <!-- BEGIN LOGO -->
+               <a class="brand" href="{{ site_url() }}">
+                   <img src="{{ asset_url()~'imgapp/logo.png'}}" alt="{{ config.appname }}" /> 
+               </a>
+               <!-- END LOGO -->
+               <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+               <a class="btn btn-navbar collapsed" id="main_menu_trigger" data-toggle="collapse" data-target=".nav-collapse">
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="arrow"></span>
+               </a>
+               <!-- END RESPONSIVE MENU TOGGLER -->
+               <div id="top_menu" class="nav notify-row">
+                   <!-- BEGIN NOTIFICATION -->
+                   <ul class="nav top-menu">
+                       <!-- BEGIN SETTINGS -->
+                       <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <i class="icon-tasks"></i>
+                               <span class="badge badge-important">{% block taskcount %}{% endblock %}</span>
+                           </a>
+                           <ul class="dropdown-menu extended tasks-bar">
+                               {% block tasklist %}{% endblock %}
+                           </ul>
+                       </li>
+                       <!-- END SETTINGS -->
+                       <!-- BEGIN INBOX DROPDOWN -->
+                       <li class="dropdown" id="header_inbox_bar">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <i class="icon-envelope-alt"></i>
+                               <span class="badge badge-important">{% block msjcount %}{% endblock %}</span>
+                           </a>
+                           <ul class="dropdown-menu extended inbox">
+                               {% block msjlist %}{% endblock %}
+                           </ul>
+                       </li>
+                       <!-- END INBOX DROPDOWN -->
+                       <!-- BEGIN NOTIFICATION DROPDOWN -->
+                       <li class="dropdown" id="header_notification_bar">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <i class="icon-bell-alt"></i>
+                               <span class="badge badge-warning">{% block alertcount %}{% endblock %}</span>
+                           </a>
+                           <ul class="dropdown-menu extended notification">
+                               {% block alertlist %}{% endblock %}
+                           </ul>
+                       </li>
+                       <!-- END NOTIFICATION DROPDOWN -->
+
+                   </ul>
+               </div>
+               <!-- END  NOTIFICATION -->
+               <div class="top-nav ">
+                   <ul class="nav pull-right top-menu" >
+                       <!-- BEGIN SUPPORT -->
+                       <li class="dropdown mtop5">
+
+                           <a class="dropdown-toggle element" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Chat">
+                               <i class="icon-comments-alt"></i>
+                           </a>
+                       </li>
+                       <li class="dropdown mtop5">
+                           <a class="dropdown-toggle element" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Help">
+                               <i class="icon-headphones"></i>
+                           </a>
+                       </li>
+                       <!-- END SUPPORT -->
+                       <!-- BEGIN USER LOGIN DROPDOWN -->
+                       <li class="dropdown mtop5">
+                           {% if CI.session.userdata('username') %}
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               {% if CI.session.userdata('userphoto') %}
+                                   <img src="{{ asset_url() }}content/userdata/photos/{{ CI.session.userdata('userphoto') }}" alt="">
+                               {% endif %}
+                               <span class="username">{{ CI.session.userdata('username') }}</span>
+                               <b class="caret"></b>
+                           </a>
+                           {% else %}
+                               <a class="dropdown-toggle element" data-placement="bottom" data-toggle="tooltip" href="{{ site_url('user/login')}}" data-original-title="{{ lang('login') }}">
+                               <i class="icon-lock"></i>
+                           </a>
+                           {% endif %}
+                           
+                           <ul class="dropdown-menu extended logout">
+                            {% if CI.session.userdata('username') %}
+                                <li><a href="{{ site_url('user/profile')}}"><i class="icon-user"></i> {{ lang('user_profile') }} </a></li>
+                                <li><a href="{{ site_url('user/settings')}}"><i class="icon-cog"></i> {{ lang('user_settings') }} </a></li>
+                                <li><a href="{{ site_url('user/logout')}}"><i class="icon-key"></i> {{ lang('logout') }} </a></li>
+                            {% endif %}
+                           </ul>
+                       </li>
+                       <!-- END USER LOGIN DROPDOWN -->
+                   </ul>
+                   <!-- END TOP NAVIGATION MENU -->
+               </div>
+           </div>
+       </div>
+       <!-- END TOP NAVIGATION BAR -->
+   </div>
+   <!-- END HEADER -->
+   <!-- BEGIN CONTAINER -->
+   <div id="container" class="row-fluid {% if leftmenu is empty %} sidebar-closed {% endif %}">
+      <!-- BEGIN SIDEBAR -->
+      {% if leftmenu is not empty %}
+      <div class="sidebar-scroll">
+          <div id="sidebar" class="nav-collapse collapse">
+
+              <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+              <div class="navbar-inverse">
+                  <form class="navbar-search visible-phone">
+                      <input type="text" class="search-query" placeholder="Search" />
+                  </form>
+              </div>
+              <!-- END RESPONSIVE QUICK SEARCH FORM -->
+              <!-- BEGIN SIDEBAR MENU -->
+              
+              <ul class="sidebar-menu">
+                    {{ nav.leftmenu(leftmenu) }}
+              </ul>
+              <!-- END SIDEBAR MENU -->
+          </div>
+      </div>
+      {% endif %}
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->  
+      <div id="main-content">
+         <!-- BEGIN PAGE CONTAINER-->
+         <div class="container-fluid">
+            <!-- BEGIN PAGE HEADER-->   
+            <div class="row-fluid">
+               <div class="span12">
+                   <!-- BEGIN THEME CUSTOMIZER-->
+                   <div id="theme-change" class="hidden-phone">
+                       <i class="icon-cogs"></i>
+                        <span class="settings">
+                            <span class="text">Theme Color:</span>
+                            <span class="colors">
+                                <span class="color-default" data-style="default"></span>
+                                <span class="color-green" data-style="green"></span>
+                                <span class="color-gray" data-style="gray"></span>
+                                <span class="color-purple" data-style="purple"></span>
+                                <span class="color-red" data-style="red"></span>
+                            </span>
+                        </span>
+                   </div>
+                   <!-- END THEME CUSTOMIZER-->
+                  <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                   <h3 class="page-title">
+                     {% block pagetitle %}{% endblock %}
+                   </h3>
+                   <ul class="breadcrumb">
+                       {% block breadcrumb %}{% endblock %}
+                   </ul>
+                   <!-- END PAGE TITLE & BREADCRUMB-->
+               </div>
+            </div>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+             <div class="row-fluid">
+                 <div class="span12">
+                     <!-- BEGIN BLANK PAGE PORTLET-->
+                     {% block content %}{% endblock %}
+                     <!-- END BLANK PAGE PORTLET-->
+                 </div>
+             </div>
+            <!-- END PAGE CONTENT-->
+         </div>
+         <!-- END PAGE CONTAINER-->
+      </div>
+      <!-- END PAGE -->  
+   </div>
+   <!-- END CONTAINER -->
+
+   <!-- BEGIN FOOTER -->
+   <div id="footer">
+       {% block footer %}{% endblock %}
+   </div>
+   <!-- END FOOTER -->
+
+   <!-- BEGIN JAVASCRIPTS -->
+   <!-- Load javascripts at bottom, this will reduce page load time -->
+   {{ js('jquery-1.8.3.min.js') }}
+   {{ js('jquery.nicescroll.js') }}
+   {{ extjs('jquery-slimscroll/jquery-ui-1.9.2.custom.min.js') }}
+   {{ extjs('jquery-slimscroll/jquery.slimscroll.min.js') }}
+   {{ extjs('bootstrap/js/bootstrap.min.js') }}
+   {{ extjs('bootstrap-growl/jquery.bootstrap-growl.min.js') }}
+   <!-- ie8 fixes -->
+   <!--[if lt IE 9]>
+   <script src="js/excanvas.js"></script>
+   <script src="js/respond.js"></script>
+   <![endif]-->
+
+   <!--common script for all pages-->
+   {{ js('common-scripts.js') }}
+
+   <script type="text/javascript" src="{{ asset_url()~'jsapp/stdfunctions.js' }}"></script>
+    {% block jscode %}
+    {% endblock %}
+   <!-- END JAVASCRIPTS -->   
+</body>
+<!-- END BODY -->
+</html>
