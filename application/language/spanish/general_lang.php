@@ -10,6 +10,7 @@ $lang ['description'] = "Descripción";
 $lang ['aresure'] = "¿Esta Seguro?";
 $lang ['delete'] = "Eliminar";
 $lang ['add'] = "Agregar";
+$lang ['manage']="Administrar";
 $lang ['confirmdelete'] = "¿Esta seguro de eliminar la información seleccionada?";
 $lang ['deleteok'] = "Información Eliminada Satisfactoriamente";
 $lang ['operationok'] = "La operación ha sido Exitosa";
@@ -89,3 +90,11 @@ $lang['rrhh_insertemail']="Inserte el Correo electronico de la persona";
 $lang['rrhh_cost']="Costo por Hora";
 $lang['rrhh_insertcost']="Inserte el costo por Hora de la persona";
 $lang['rrhh_name']="Nombre";
+
+//Projects
+$lang['py_projects']="Proyectos";
+$lang['py_structure']="Estructura del Proyecto";
+$lang['py_addnew']="Crear Nuevo Proyecto";
+$lang['py_admin']="Administración del proyecto";
+$lang['py_addphase']="Agregar Fase";
+$lang['py_shouldselected']="Debe Haber un proyecto seleccionado";

@@ -82,3 +82,23 @@ ul.wide-list li .action {
 .selected{
 	background-color:#A4A4A4 !important;
 }
+.py_phase{
+    background: url(../imgapp/project/phase.png) no-repeat left;
+    padding-left:20px;
+}
+.py_subphase{
+    background: url(../imgapp/project/subphase.png) no-repeat left;
+    padding-left:20px;
+}
+.py_deliv{
+	background: url(../imgapp/project/deliverable.png) no-repeat left;
+	padding-left:20px;
+}
+.py_pack{
+	background: url(../imgapp/project/package.png) no-repeat left;
+	padding-left:20px;
+}
+.py_act{
+	background: url(../imgapp/project/activity.png) no-repeat left;
+	padding-left:20px;
+}

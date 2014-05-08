@@ -130,7 +130,7 @@ class Rrhh extends MY_Controller {
 	    $profilename=$this->input->post('name');
 	    $ok=$this->Rhumans->delProfile($profileid);
 	    if($ok){
-	        $msj=lang('operationok').$profileid;
+	        $msj=lang('operationok');
 	        $type='success';
 	    }else{
 	        $msj=lang('operationfails').', '.lang('rrhh_errdelprofile');
