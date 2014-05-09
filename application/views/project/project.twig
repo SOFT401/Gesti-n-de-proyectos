@@ -1,9 +1,9 @@
 {% extends '_layouts/index.twig' %}
 
 {% block headext %}
-    {{ css('jquery.validate.password.css') }}
     {{ extcss('chosen-bootstrap/chosen/chosen.css') }}
     {{ extcss('bootstrap-tree/bootstrap-tree/css/bootstrap-tree.css') }}
+    {{ extcss('bootstrap-timepicker/compiled/timepicker.css"') }}
 {% endblock %}
 {% block content %}
 {% import '_tools/formElements.twig' as forms %}
@@ -18,6 +18,7 @@
         </div>
         <div class="widget-body">
             <div class="widget-form box box-content" style="display:none;">
+            
 				<i class="icon-remove closeaddform" style="float:right"></i>
 				<form id="addproject" class="form-horizontal" method="post">
 				    {{ forms.campo({'tipo':'input','type':'hidden','name':'id'}) }}
@@ -55,73 +56,204 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span3">
+    <div class="span4">
         <div class="widget">
             <div class="widget-title">
 	            <h4>{{ lang('py_structure') }}</h4>
 	            <span class="tools">
 	                <a href="#" class=""><i class="icon-chevron-down"></i></a>
-	                <a href="javascript:void(0)" class=""><i class="icon-plus" title="{{ lang('py_addphase') }}"></i></a>
 	            </span>
             </div>
-            <div class="widget-body">
-	            <div class="widget-form box box-content" style="display:none;">
-	                <i class="icon-remove closeaddform" style="float:right"></i>
-					<form id="addphase" class="form-vertical" method="post">
-					    {{ forms.campo({'tipo':'input','type':'hidden','name':'projectid'}) }}
-					    {{ forms.campo({'tipo':'input','type':'hidden','name':'id'}) }}
-						{{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
-						<div class="form-actions">
-							<p class="center span5">
-	                      	   <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
-	                      	   <button class="btn formcancelar" style="display:none;">{{ lang('cancel') }}</button>
-	                   		</p>
-	                   	</div>
-					</form>
-				</div>
-				<div class="">
-				    <div class="actions">
-                        <a class="btn btn-small btn-success" id="tree_1_collapse" href="javascript:;"> Collapse All</a>
-                        <a class="btn btn-small btn-warning" id="tree_1_expand" href="javascript:;"> Expand All</a>
-                    </div>
-                    <div class="tree-container">
-                    </div>
-                    
-				</div>
+            <div class="widget-body" style="min-height:30px;">
+			    <div class="">
+                    <a class="btn btn-small btn-success" id="tree_1_collapse" href="javascript:;">{{ lang('tree_collapse') }}</a>
+                    <a class="btn btn-small btn-warning" id="tree_1_expand" href="javascript:;">{{ lang('tree_expand') }}</a>
+                </div>
+                <div class="tree-container">
+                </div>
             </div>
         </div>
     </div>
-    <div class="span9">
+    <div class="span8">
         <div class="widget">
             <div class="widget-title">
                 <h4 id="Current_branch"></h4>
             </div>
             <div class="widget-body">
-                <div class="phase_container">
+                <form id="branchinfo">
+                    <input type="hidden" name="branchtype" value="" />
+                    <input type=""hidden"" name="branchid" value="" />
+                </form>
+                <div class="pcontainer project_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="addphase" data-toggle="modal" data-target="#addphase_cont">{{ lang('py_addphase') }}</a>
+                    </div>
+                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
                 </div>
-                <div class="subphase_container">
+                <div class="pcontainer phase_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="addsubphase" data-toggle="modal" data-target="#addsubphase_cont">{{ lang('py_addsubphase') }}</a>
+                    </div>
+                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
                 </div>
-                <div class="deliver_container">
+                <div class="pcontainer subphase_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="adddeliv" data-toggle="modal" data-target="#adddeliverable_cont">{{ lang('py_adddeliv') }}</a>
+                    </div>
+                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
                 </div>
-                <div class="package_container">
+                <div class="pcontainer deliver_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="addpackage" data-toggle="modal" data-target="#addpackage_cont">{{ lang('py_addpackage') }}</a>
+                        <a class="btn btn-small btn-warning" id="addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
+                    </div>
+                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
                 </div>
-                <div class="activity_container">
+                <div class="pcontainer package_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
+                    </div>
+                   <div>{{ lang('name') }}: <div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
+                </div>
+                <div class="pcontainer activity_container" style="display:none;">
+                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div>{{ lang('py_identificator') }}:<h4 class="id"></h4></div>
+                    <div>{{ lang('date_ini') }}:<div class="date_ini"></div></div>
+                    <div>{{ lang('date_end') }}:<div class="date_end"></div></div>
+                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="indicators"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row-fluid">
+    <div id="addphase_cont" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="display: none;">
+        <form id="addphaseform" class="form-horizontal" method="post" >
+	        <div class="modal-header">
+	            <a href="#" class="close" data-dismiss="modal">×</a>
+	            <h3>{{ lang('py_newphase') }}</h3>
+	        </div>
+		    <div class="modal-body">
+		        <div class="divDialogElements">
+		          {{ forms.campo({'tipo':'input','type':'hidden','name':'projectid'}) }}
+		          {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		        </div>
+		    </div>
+		    <div class="modal-footer">
+                <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+                <button class="btn cancelarmodal" data-dismiss="modal">{{ lang('cancel') }}</button>
+		    </div>
+	    </form>
+    </div>
+    <div id="addsubphase_cont" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none;">
+        <form id="addsubphaseform" class="form-horizontal" method="post">
+	        <div class="modal-header">
+	            <a href="#" class="close" data-dismiss="modal">×</a>
+	            <h3>{{ lang('py_newsubphase') }}</h3>
+	        </div>
+		    <div class="modal-body">
+		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'phaseid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'projectid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		        </div>
+		    </div>
+		    <div class="modal-footer">
+                <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+                <button class="btn cancelarmodal" data-dismiss="modal">{{ lang('cancel') }}</button>
+		    </div>
+	    </form>
+    </div>
+    <div id="adddeliverable_cont" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none;">
+        <form id="adddeliverableform" class="form-horizontal" method="post">
+	        <div class="modal-header">
+	            <a href="#" class="close" data-dismiss="modal">×</a>
+	            <h3>{{ lang('py_newdeliverable') }}</h3>
+	        </div>
+		    <div class="modal-body">
+		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'phaseid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		        </div>
+		    </div>
+		    <div class="modal-footer">
+                <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+                <button class="btn cancelarmodal" data-dismiss="modal">{{ lang('cancel') }}</button>
+		    </div>
+	    </form>
+    </div>
+    <div id="addpackage_cont" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none;">
+        <form id="addpackageform" class="form-horizontal" method="post">
+	        <div class="modal-header">
+	            <a href="#" class="close" data-dismiss="modal">×</a>
+	            <h3>{{ lang('py_newpackage') }}</h3>
+	        </div>
+		    <div class="modal-body">
+		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description')}) }}
+		        </div>
+		    </div>
+		    <div class="modal-footer">
+                <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+                <button class="btn cancelarmodal" data-dismiss="modal">{{ lang('cancel') }}</button>
+		    </div>
+	    </form>
+    </div>
+    <div id="addactivity_cont" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="windowTitleLabel" aria-hidden="true" style="display: none;">
+        <form id="addactivityform" class="form-horizontal" method="post">
+	        <div class="modal-header">
+	            <a href="#" class="close" data-dismiss="modal">×</a>
+	            <h3>{{ lang('py_newactivity') }}</h3>
+	        </div>
+		    <div class="modal-body">
+		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'packageid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description')}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'identifier','label':lang('py_identificator'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'input','type':'date','name':'date_ini','label':lang('date_ini'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
+		            {{ forms.campo({'tipo':'input','type':'date','name':'date_end','label':lang('date_end'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
+		        </div>
+		    </div>
+		    <div class="modal-footer">
+                <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('send') }}</button>
+                <button class="btn cancelarmodal " data-dismiss="modal">{{ lang('cancel') }}</button>
+		    </div>
+	    </form>
+    </div>
+</div>
 {% endblock %}
 {% block jscode %}
-{{ js('jquery.validate.min.js') }}
-{{ js('jquery.validate.password.js') }}
+{{ js('jquery.validate.js') }}
+{{ js('additional-methods.min.js') }}
 {{ extjs('chosen-bootstrap/chosen/chosen.jquery.min.js') }}
 {{ extjs('data-tables/jquery.dataTables.js') }}
 {{ extjs('data-tables/DT_bootstrap.js') }}
 {{ extjs('bootstrap-tree/bootstrap-tree/js/bootstrap-tree.js') }}
 {{ js('tree.js') }}
+{{ extjs('bootstrap-datepicker/js/bootstrap-datepicker.js') }}
+{{ js('datepicker-es.js') }}
 <script type="text/javascript">
 $(document).ready(function() {
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+    
+    $('.datepicker').datepicker({
+    	format:'yyyy-mm-dd',
+    });
     $('.resetform').click(function(){
         resetForm($(this).closest('.widget-form').find('form'));
         $(this).closest('.widget').find('.widget-form').find('form').find('input[name=id]').val(0);
@@ -134,45 +266,8 @@ $(document).ready(function() {
         $(this).closest('form').find('input[name=id]').val(0);
         $(this).closest('.widget').find('.widget-form').slideUp();
     });
-    $('#addphase').validate({
-        errorClass:'errorlabelform',
-        elErrorClass:'errorlabel',
-        rules : {
-            name:{
-                required :true,
-                minlength :5,
-            }
-        },
-        messages : {
-            name:{
-                required : '{{ lang('auth_required') }}',
-                minlength : '{{ lang('auth_tooshort') }}',
-            }
-        },
-        submitHandler: function(form) {
-            data = $(form).serializeObject();
-            if(data.projectid<1){
-                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
-            }else{
-	    		$.ajax({
-	    		    type:"POST",
-	                url: '{{ site_url('project/addphase') }}',
-	                dataType:'json',
-	                data: data,
-	                error:function (jqXHR, textStatus, errorThrown) {
-	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
-	                }
-	            }).done(function(data){
-					if (data.notify){
-						notify({'msj':data.msj,'type':data.notytype})
-					}
-					$('#addphase').find('.formcancelar').trigger('click');
-					resetForm($('#addphase'));
-					$('#addphase').find('input[name=id]').val(0);
-					loadProjectTree($('#addphase').find('input[name=projectid]').val());
-	    		});
-            }
-        },
+    $('.cancelarmodal').on('click',function(){
+        resetForm($(this).closest('form'));
     });
     $('#addproject').validate({
         errorClass:'errorlabelform',
@@ -218,8 +313,7 @@ $(document).ready(function() {
 			});
     	}
     });
-    $('[data-rel="chosen"],[rel="chosen"]').chosen({"no_results_text":"{{ lang('noresults') }}",disable_search_threshold: 10});
-
+    
     var tableprojects = $('#tableprojects').dataTable({
         "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'row-fluid'<'span12 center'p>>",
         "sPaginationType": "bootstrap",
@@ -272,34 +366,35 @@ $(document).ready(function() {
     function loadProjectTree(projectid){
         $.ajax({
         	type:"POST",
-            url: '{{ site_url('project/getProjectTree') }}',
+            url: '{{ site_url('project/loadproject') }}',
             dataType:'json',
             data:{id:projectid},
             error:function (jqXHR, textStatus, errorThrown) {
             	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
             }
             }).done(function(data){
-                Draw_ProjectTree(data.tree);
+                Draw_ProjectTree(data.tree,data.data.id,data.data.name);
             });
     }
-    function Draw_ProjectTree(tree){
+    function Draw_ProjectTree(tree,projectid,projectname){
         console.log(tree);
         html='<ul id="tree_1" class="tree">';
+        html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_project" data-id="'+projectid+'">'+projectname+'</span></a><ul class="branch in">';
         for (var phaseid in tree){
-            html+='<li><a href="javascript:void(0)" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_phase" data-id="'+phaseid+'">'+tree[phaseid].name+'</span></a><ul class="branch in">';
+            html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_phase" data-id="'+phaseid+'">'+tree[phaseid].name+'</span></a><ul class="branch in">';
             for(var subfaseid in tree[phaseid].subphases){
-                html+='<li><a href="javascript:void(0)" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_subphase" data-id="'+subfaseid+'">'+tree[phaseid].subphases[subfaseid].name+'</span></a><ul class="branch">';
+                html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_subphase" data-id="'+subfaseid+'">'+tree[phaseid].subphases[subfaseid].name+'</span></a><ul class="branch">';
                 for(var delivid in tree[phaseid].subphases[subfaseid]['deliv']){
-                    html+='<li><a href="javascript:void(0)" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_deliv" data-id="'+delivid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].name+'</span></a><ul class="branch">';
+                    html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_deliv" data-id="'+delivid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].name+'</span></a><ul class="branch">';
                     for(var packid in tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages){
-                        html+='<li><a href="javascript:void(0)" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_pack" data-id="'+packid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages[packid].name+'</span></a><ul class="branch">';
+                        html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_pack" data-id="'+packid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages[packid].name+'</span></a><ul class="branch">';
                         for (var actid in tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages[packid].activities){
-                            html+='<li><a href="javascript:void(0)" class=" tree-toggle" data-role="branch" ><span class="py_act" data-id="'+actid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages[packid].activities[actid]+'</span></a></li>';
+                            html+='<li><a href="" class=" tree-toggle" data-role="branch" ><span class="py_act" data-id="'+actid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].packages[packid].activities[actid]+'</span></a></li>';
                         }
                         html+='</ul></li>';
                     }
                     for (var actid in tree[phaseid].subphases[subfaseid]['deliv'][delivid].activities){
-                        html+='<li><a href="javascript:void(0)" class="tree-toggle" data-role="branch" ><span class="py_act" data-id="'+packid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].activities[actid]+'</span></a></li>';
+                        html+='<li><a href="" class="tree-toggle" data-role="branch" ><span class="py_act" data-id="'+actid+'">'+tree[phaseid].subphases[subfaseid]['deliv'][delivid].activities[actid]+'</span></a></li>';
                     }
                     html+='</ul></li>';
                 }
@@ -310,6 +405,7 @@ $(document).ready(function() {
         html+='</ul>';
         $('.tree-container').html(html);
         dom_project();
+        $('#tree_1_collapse').trigger('click');
     }
     function dom_tableprojects(){
         $('.edit_project').on('click',function(){
@@ -326,7 +422,6 @@ $(document).ready(function() {
                     $('#addproject').find('input[name=id]').val(data.id);
                     $('#addproject').find('input[name=name]').val(data.data.name);
                     $('#addproject').find('input[name=description]').val(data.data.description);
-                    Draw_ProjectTree(data.tree);
                 });
         });
         $('.admin_project').on('click',function(){
@@ -339,31 +434,361 @@ $(document).ready(function() {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
                 }).done(function(data){
-                    $('#addphase').find('input[name=projectid]').val(data.id);
+                    $('#addphaseform').find('input[name=projectid]').val(data.id);
+                    $('#loaded_project').find('input[name=projectid]').val(data.id);
+                    $('#addsubphaseform').find('input[name=projectid]').val(data.id);
                     $('#loaded_project').find('h1').html(data.data.name);
                     $('#loaded_project').find('p').html(data.data.description);
-                    Draw_ProjectTree(data.tree);
+                    Draw_ProjectTree(data.tree,data.id,data.data.name);
                 });
         });
     }
     function dom_project(){
         // cargar acciones de la faase o subfase...
-        $('.py_phase').click(function(){
-            
+        $('.py_project').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loadprojectinfo') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#Current_branch').html(data.name);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('project');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_project);
+                    $('form#addphaseform').find('input[name=projectid]').val(data.data.id_project);
+                    $('.project_container').find('.name').find('h1').html(data.data.name);
+                    $('.project_container').find('.advance').html(data.data.advance);
+                    $('.project_container').slideDown();
+                });
         });
-        $('.py_subphase').click(function(){
-            
+        $('.py_phase').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loadphase') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#Current_branch').html(data.phasename);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('phase');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_phase);
+                    $('form#addsubphaseform').find('input[name=phaseid]').val(data.data.id_phase);
+                    $('.phase_container').find('.name').find('h1').html(data.data.name);
+                    $('.phase_container').find('.advance').html(data.data.advance);
+                    $('.phase_container').slideDown();
+                });
         });
-        $('.py_deliv').click(function(){
-            
+        $('.py_subphase').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loadphase') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#Current_branch').html(data.phasename);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('subphase');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_phase);
+                    $('form#adddeliverableform').find('input[name=phaseid]').val(data.data.id_phase);
+                    $('.subphase_container').find('.name').find('h1').html(data.data.name);
+                    $('.subphase_container').find('.advance').html(data.data.advance);
+                    $('.subphase_container').slideDown();
+                });
         });
-        $('.py_pack').click(function(){
-            
+        $('.py_deliv').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loaddeliverable') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#Current_branch').html(data.phasename);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('deliverable');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_deliverable);
+                    $('form#addpackageform').find('input[name=delivid]').val(data.data.id_deliverable);
+                    $('form#addactivityform').find('input[name=delivid]').val(data.data.id_deliverable);
+                    $('form#addactivityform').find('input[name=packageid]').val(0);
+                    $('.deliver_container').find('.name').find('h1').html(data.data.description);
+                    $('.deliver_container').find('.advance').html(data.data.advance);
+                    $('.deliver_container').slideDown();
+                });
         });
-        $('.py_act').click(function(){
-            
+        $('.py_pack').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loadpackage') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#Current_branch').html(data.phasename);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('package');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_package);
+                    $('form#addactivityform').find('input[name=packageid]').val(data.data.id_package);
+                    $('form#addactivityform').find('input[name=delivid]').val(0);
+                    $('.package_container').find('.name').find('h1').html(data.data.name);
+                    $('.package_container').find('.advance').html(data.data.advance);
+                    $('.package_container').slideDown();
+                });
+        });
+        $('.py_act').click(function(e){
+            e.preventDefault();
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/loadactivity') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    console.log(data);
+                    $('#Current_branch').html(data.phasename);
+                    $('.pcontainer').slideUp();
+                    $('#branchinfo').find('input[name=branchtype]').val('activity');
+                    $('#branchinfo').find('input[name=branchid]').val(data.data.id_activity);
+                    $('.activity_container').find('.name').find('h1').html(data.data.name);
+                    $('.activity_container').find('.id').html(data.data.identificator);
+                    $('.activity_container').find('.date_ini').html(data.data.date_ini);
+                    $('.activity_container').find('.date_end').html(data.data.date_end);
+                    $('.activity_container').find('.advance').html(data.data.advance);
+                    $('.activity_container').slideDown();
+                });
         });
     }
+    $('#addphaseform').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        rules : {
+            name:{
+                required :true,
+                minlength :5,
+            }
+        },
+        messages : {
+            name:{
+                required : '{{ lang('auth_required') }}',
+                minlength : '{{ lang('auth_tooshort') }}',
+            }
+        },
+        submitHandler: function(form) {
+            data = $(form).serializeObject();
+            if(data.projectid<1){
+                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
+            }else{
+	    		$.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/addphase') }}',
+	                dataType:'json',
+	                data: data,
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('#addphaseform').find('.cancelarmodal').trigger('click');
+					resetForm($('#addphaseform'));
+					$('#addphaseform').find('input[name=id]').val(0);
+					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+	    		});
+            }
+        },
+    });
+    $('#addsubphaseform').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        rules : {
+            name:{
+                required :true,
+                minlength :5,
+            }
+        },
+        messages : {
+            name:{
+                required : '{{ lang('auth_required') }}',
+                minlength : '{{ lang('auth_tooshort') }}',
+            }
+        },
+        submitHandler: function(form) {
+            data = $(form).serializeObject();
+            if(data.projectid<1){
+                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
+            }else{
+	    		$.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/addphase') }}',
+	                dataType:'json',
+	                data: data,
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('#addsubphaseform').find('.cancelarmodal').trigger('click');
+					resetForm($('#addsubphaseform'));
+					$('#addsubphaseform').find('input[name=id]').val(0);
+					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+	    		});
+            }
+        },
+    });
+    $('#adddeliverableform').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        rules : {
+            name:{
+                required :true,
+                minlength :5,
+            }
+        },
+        messages : {
+            name:{
+                required : '{{ lang('auth_required') }}',
+                minlength : '{{ lang('auth_tooshort') }}',
+            }
+        },
+        submitHandler: function(form) {
+            data = $(form).serializeObject();
+            if(data.projectid<1){
+                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
+            }else{
+	    		$.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/adddeliverable') }}',
+	                dataType:'json',
+	                data: data,
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('#adddeliverableform').find('.cancelarmodal').trigger('click');
+					resetForm($('#adddeliverableform'));
+					$('#adddeliverableform').find('input[name=id]').val(0);
+					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+	    		});
+            }
+        },
+    });
+    $('#addpackageform').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        rules : {
+            name:{
+                required :true,
+                minlength :5,
+            }
+        },
+        messages : {
+            name:{
+                required : '{{ lang('auth_required') }}',
+                minlength : '{{ lang('auth_tooshort') }}',
+            }
+        },
+        submitHandler: function(form) {
+            data = $(form).serializeObject();
+            if(data.projectid<1){
+                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
+            }else{
+	    		$.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/addpackage') }}',
+	                dataType:'json',
+	                data: data,
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('#addpackageform').find('.cancelarmodal').trigger('click');
+					resetForm($('#addpackageform'));
+					$('#addpackageform').find('input[name=id]').val(0);
+					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+	    		});
+            }
+        },
+    });
+    $('#addactivityform').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        rules : {
+            name:{
+                required :true,
+                minlength :5,
+            },
+            identifier:{
+                required:true,
+                maxlength:8,
+                nowhitespace:true
+            }
+        },
+        messages : {
+            name:{
+                required : '{{ lang('auth_required') }}',
+                minlength : '{{ lang('auth_tooshort') }}',
+            },
+            identifier:{
+                required : '{{ lang('auth_required') }}',
+                maxlength : '{{ lang('max_length')|format('',8) }}',
+                nowhitespace:   '{{ lang('no_spaces')|format('') }}',
+            },
+            
+        },
+        submitHandler: function(form) {
+            data = $(form).serializeObject();
+            if(data.projectid<1){
+                notify({'msj':'{{ lang('py_shouldselected') }}','type':'error'})
+            }else{
+	    		$.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/addactivity') }}',
+	                dataType:'json',
+	                data: data,
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					if (data.notify){
+						notify({'msj':data.msj,'type':data.notytype})
+					}
+					$('#addactivityform').find('.cancelarmodal').trigger('click');
+					resetForm($('#addactivityform'));
+					$('#addactivityform').find('input[name=id]').val(0);
+					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+	    		});
+            }
+        },
+    });
     loadProjects();
 });
 </script>

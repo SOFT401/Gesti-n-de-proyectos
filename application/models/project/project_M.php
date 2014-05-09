@@ -27,7 +27,16 @@ class Project_M extends CI_Model
         }
         return $response;
     }
-    //TODO: implementar
+    //TODO: aca lleva indicadores y todo eso
+    function getProjectInfo($id){
+        $this->db->where('id_project',$id);
+        $response=array();
+        $query=$this->db->get($this->table_project);
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
     function getProjectTree($id){
         //obtener fases y subfases:
         $this->db->select('id_phase as id, name, parent_phase');
@@ -164,6 +173,42 @@ class Project_M extends CI_Model
             }
         }
     }
+    function getPhaseInfo($phaseid){
+        $this->db->where('id_phase', $phaseid);
+        $response=array();
+        $query=$this->db->get($this->table_phases);
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
+    function getDeliverableInfo($delivid){
+        $this->db->where('id_deliverable', $delivid);
+        $response=array();
+        $query=$this->db->get($this->table_deliverables);
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
+    function getPackageInfo($delivid){
+        $this->db->where('id_package', $delivid);
+        $response=array();
+        $query=$this->db->get($this->table_packages);
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
+    function getActivityInfo($delivid){
+        $this->db->where('id_activity', $delivid);
+        $response=array();
+        $query=$this->db->get($this->table_activities);
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
     function addPhase($projectid,$name,$parentphase=0){
         $data['projectid'] = $projectid;
         $data['name']=$name;
@@ -174,6 +219,45 @@ class Project_M extends CI_Model
             return $phase_id;
         }
         return false;
+    }
+    function AddDeliverable($phaseid,$description){
+        $data['phaseid'] = $phaseid;
+        $data['description']=$description;
+        $data['advance']=0;
         
+        if ($this->db->insert($this->table_deliverables, $data)) {
+            $deliverable_id = $this->db->insert_id();
+            return $deliverable_id;
+        }
+        return false;
+    }
+    function AddPackage($deliverableid,$name,$description=''){
+        $data['deliverableid'] = $deliverableid;
+        $data['name']=$name;
+        $data['description']=$description;
+        $data['advance']=0;
+        
+        if ($this->db->insert($this->table_packages, $data)) {
+            $deliverable_id = $this->db->insert_id();
+            return $deliverable_id;
+        }
+        return false;
+    }
+    function addactivity($name,$identificator,$description,$date_ini,$date_end,$packageid,$deliverableid){
+        $data['name']=$name;
+        $data['identificator']=$identificator;
+        $data['description']=$description;
+        $data['date_ini']=$date_ini;
+        $data['date_end']=$date_end;
+        
+        $data['advance']=0;
+        $data['deliverableid'] = $deliverableid;
+        $data['packageid']=$packageid;
+        
+        if ($this->db->insert($this->table_activities, $data)) {
+            $activity_id = $this->db->insert_id();
+            return $activity_id;
+        }
+        return false;
     }
 }

@@ -49,6 +49,7 @@
 
     , toggle: function () {
       
+      if(event.toElement.tagName=='SPAN') return;
       var a, n, s
         , currentStatus = this.$element.hasClass("in")
         , eventName = (!currentStatus) ? "openbranch" : "closebranch"
