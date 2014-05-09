@@ -1,8 +1,9 @@
 <?php
 class Rhumans extends CI_Model
 {
-    private $table_profiles      = 'rrhh_profiles';            // departments
-    private $table_people        = 'rrhh_resource';          // cities
+    private $table_profiles      = 'rrhh_profiles';         // departments
+    private $table_people        = 'rrhh_resource';         // cities
+    private $table_asignres     = 'py_resourceactivity';    // Asignación de recursos a las actividades
 
     function __construct()
     {
@@ -23,6 +24,7 @@ class Rhumans extends CI_Model
         return $arrProfiles;
     }
     function getProfile($id){
+        $this->db->select("$this->table_profiles.profileid as id,$this->table_profiles.name");
         $this->db->where('profileid',$id);
         $response=array();
         $query=$this->db->get($this->table_profiles);
@@ -77,7 +79,7 @@ class Rhumans extends CI_Model
         return $arrPeople;
     }
     function getPerson($id){
-        $this->db->select("$this->table_people.resourceid as id,$this->table_people.name,phone,email,cost,$this->table_profiles.profileid as profileid,$this->table_profiles.name as profilename");
+        $this->db->select("$this->table_people.resourceid as id,$this->table_people.name,phone,cellphone,email,cost,$this->table_profiles.profileid as profileid,$this->table_profiles.name as profilename");
         $this->db->from($this->table_people);
         $this->db->join($this->table_profiles, "$this->table_people.profileid = $this->table_profiles.profileid");
         $this->db->where("$this->table_people.resourceid",$id);
@@ -85,10 +87,11 @@ class Rhumans extends CI_Model
         $arrPeople=$query->row();
         return $arrPeople;
     }
-    function setPerson($name,$phone,$email,$cost,$profileid,$id=0){
+    function setPerson($name,$cellphone,$phone,$email,$cost,$profileid,$id=0){
         if($id==0){
             $data['name'] = $name;
             $data['phone'] = $phone;
+            $data['cellphone'] = $cellphone;
             $data['email'] = $email;
             $data['cost'] = $cost;
             $data['profileid'] = $profileid;
@@ -104,6 +107,7 @@ class Rhumans extends CI_Model
         }else{
             $data['name'] = $name;
             $data['phone'] = $phone;
+            $data['cellphone'] = $cellphone;
             $data['email'] = $email;
             $data['cost'] = $cost;
             $data['profileid'] = $profileid;
@@ -122,14 +126,18 @@ class Rhumans extends CI_Model
         }
     }
     function delPerson($id){
-        //TODO: se debe implementar que las personas para el borrado no puedan tener actividades asignadas?
         if($this->getPeopleValidate($id)){
-            return $this->db->delete($this->table_people, array('id' => $id)); ;
+            return $this->db->delete($this->table_people, array('resourceid' => $id));
         }
         return false;
     }
-    //TODO: cambiar nombre a función, implementar
-    function getPeopleValidate($id){
+    function getPeopleValidate($resourceid){
+        $this->db->where('resourceid', $resourceid);
+        $query=$this->db->get($this->table_asignres);
+        $response=0;
+        if ($query->num_rows() > 0){
+            return false;
+        }
         return true;
     }
 }

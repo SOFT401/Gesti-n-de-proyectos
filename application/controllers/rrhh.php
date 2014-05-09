@@ -24,6 +24,7 @@ class Rrhh extends MY_Controller {
 	                    'id'=>array('tipo'=>'input','type'=>'hidden','name'=>'id','value'=>'0'),
 	                    'name'=>array('tipo'=>'input','type'=>'text','name'=>'name','label'=>$this->lang->line('rrhh_name'),'placeholder'=>$this->lang->line('rrhh_insertprofile')),
 	                    'phone'=>array('tipo'=>'input','type'=>'text','name'=>'phone','label'=>$this->lang->line('rrhh_phone'),'placeholder'=>$this->lang->line('rrhh_insertphone'),'append'=>array('tipo'=>'icon','name'=>'phone-sign')),
+	                    'cellphone'=>array('tipo'=>'input','type'=>'text','name'=>'cellphone','label'=>$this->lang->line('rrhh_cellphone'),'placeholder'=>$this->lang->line('rrhh_insertcellphone'),'append'=>array('tipo'=>'icon','name'=>'mobile-phone')),
 	                    'email'=>array('tipo'=>'input','type'=>'text','name'=>'email','label'=>$this->lang->line('rrhh_email'),'placeholder'=>$this->lang->line('rrhh_insertemail'),'append'=>'@'),
 	                    'cost'=>array('tipo'=>'input','type'=>'text','name'=>'cost','label'=>$this->lang->line('rrhh_cost'),'placeholder'=>$this->lang->line('rrhh_insertcost'),'append'=>'$'),
 	                    'profileid'=>array('tipo'=>'select','name'=>'profileid','label'=>$this->lang->line('rrhh_profile'),'opciones'=>$this->Rhumans->getProfiles(true))
@@ -35,15 +36,19 @@ class Rrhh extends MY_Controller {
 	                    ),
 	                    'phone'=>array(
 	                            'required'=>array('val'=>'true','msj'=>$this->lang->line('auth_required')),
-	                            'number'=>array('val'=>'true','msj'=>$this->lang->line('numerico')),
+	                            'number'=>array('val'=>'true','msj'=>sprintf($this->lang->line('numerico'),'')),
+	                    ),
+	                    'cellphone'=>array(
+	                            'required'=>array('val'=>'true','msj'=>$this->lang->line('auth_required')),
+	                            'number'=>array('val'=>'true','msj'=>sprintf($this->lang->line('numerico'),'')),
 	                    ),
 	                    'email'=>array(
 	                            'required'=>array('val'=>'true','msj'=>$this->lang->line('auth_required')),
-	                            'email'=>array('val'=>'true','msj'=>$this->lang->line('valid_email')),
+	                            'email'=>array('val'=>'true','msj'=>sprintf($this->lang->line('valid_email'),'')),
 	                    ),
 	                    'cost'=>array(
 	                            'required'=>array('val'=>'true','msj'=>$this->lang->line('auth_required')),
-	                            'number'=>array('val'=>'true','msj'=>$this->lang->line('numerico')),
+	                            'number'=>array('val'=>'true','msj'=>sprintf($this->lang->line('numerico'),'')),
 	                    )
 	            ),
 	            'breadcrumb'=>array(
@@ -155,15 +160,16 @@ class Rrhh extends MY_Controller {
 	    $personid=$this->input->post('id');
 	    $name=$this->input->post('name');
 	    $phone=$this->input->post('phone');
+	    $cellphone=$this->input->post('cellphone');
 	    $email=$this->input->post('email');
 	    $cost=$this->input->post('cost');
 	    $profileid=$this->input->post('profileid');
-	    $ok=$this->Rhumans->setPerson($name,$phone,$email,$cost,$profileid,$personid);
+	    $ok=$this->Rhumans->setPerson($name,$cellphone,$phone,$email,$cost,$profileid,$personid);
 	    if($ok){
 	        $msj=lang('operationok');
 	        $type='success';
 	    }else{
-	        $msj=lag('operationfails');
+	        $msj=lang('operationfails');
 	        $type='error';
 	    }
 	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type));
@@ -171,10 +177,15 @@ class Rrhh extends MY_Controller {
 	public function delPerson(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $personid=$this->input->post('id');
-	    $ok=$this->Rhumans->delPerson($personid);
-	    if($ok){
-	        $msj=lang('operationok');
-	        $type='success';
+	    if($this->Rhumans->getPeopleValidate($personid)){
+	        $ok=$this->Rhumans->delPerson($personid);
+	        if($ok){
+	            $msj=lang('operationok');
+	            $type='success';
+	        }else{
+	            $msj=lang('operationfails');
+	            $type='error';
+	        }
 	    }else{
 	        $msj=lang('operationfails').', '.lang('rrhh_errdelperson');
 	        $type='error';

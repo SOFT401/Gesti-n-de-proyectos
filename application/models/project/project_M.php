@@ -1,15 +1,18 @@
 <?php
-class Project_M extends CI_Model
+class project_m extends CI_Model
 {
-    private $table_project      = 'py_project';            // Proyecto
-    private $table_phases       = 'py_phase';              // FAse, Subfase
-    private $table_deliverables = 'py_deliverable';        // Entregables
-    private $table_packages     = 'py_package';            // Paquetes
-    private $table_activities   = 'py_activity';           // Actividades
+    private $table_project      = 'py_project';             // Proyecto
+    private $table_phases       = 'py_phase';               // FAse, Subfase
+    private $table_deliverables = 'py_deliverable';         // Entregables
+    private $table_packages     = 'py_package';             // Paquetes
+    private $table_activities   = 'py_activity';            // Actividades
+    private $table_asignres     = 'py_resourceactivity';    // Asignación de recursos a las actividades
+    private $table_resources    = 'rrhh_resource';          // Recursos
     
     function __construct()
     {
         parent::__construct();
+        $this->load->model('rrhh/Rhumans');
     }
     
     function getProjects($toselect=false){
@@ -26,6 +29,40 @@ class Project_M extends CI_Model
             $response = $query->row();
         }
         return $response;
+    }
+    function getActivitiesinTree($id,$context){
+        
+        $select='';
+        $where='';
+        if($context=='project'){
+            $select="";
+            $where="$this->table_phases.projectid=$id";
+        }elseif($context=='phase'){
+            $select="";
+            $where="($this->table_phases.phaseid=$id OR $this->table_phases.parent_phase=$id)";
+        }elseif($context=='subphase'){
+            $select="";
+            $where="$this->table_deliverables.id_deliverable=$id";
+        }elseif($context=='deliverable'){
+            $where="($this->table_packages.deliverableid=$id OR $this->table_activities.deliverableid=$id)";
+        }elseif($context=='package'){
+            $where="$this->table_activities.packageid=$id";
+        }else{
+            $where="$this->table_activities.id_activity=$id";
+        }
+        
+        $sql="select DISTINCT $select $this->table_activities.id_activity,$this->table_activities.identificator,$this->table_activities.name,
+        $this->table_activities.packageid,$this->table_activities.deliverableid
+        from $this->table_activities,$this->table_packages,$this->table_deliverables
+        join $this->table_phases on ($this->table_deliverables.phaseid=$this->table_phases.id_phase)
+        where (($this->table_activities.packageid=$this->table_packages.id_package AND 
+            $this->table_packages.deliverableid=$this->table_deliverables.id_deliverable)OR 
+	       $this->table_activities.deliverableid=$this->table_deliverables.id_deliverable)
+	       AND $where";
+        $query = $this->db->query($sql);
+        
+        $arrActivities=$query->result();
+        return $arrActivities;
     }
     //TODO: aca lleva indicadores y todo eso
     function getProjectInfo($id){
@@ -209,6 +246,17 @@ class Project_M extends CI_Model
         }
         return $response;
     }
+    function getActivityResources($activityid){
+        $this->db->select("$this->table_asignres.id_resourceactivity,$this->table_resources.name,
+                $this->table_asignres.planned_hours,$this->table_asignres.running_hours,
+                $this->table_asignres.planned_cost,$this->table_asignres.running_cost");
+        $this->db->join($this->table_resources,"$this->table_resources.resourceid=$this->table_asignres.resourceid");
+        $this->db->where('activityid', $activityid);
+        $response=array();
+        $query=$this->db->get($this->table_asignres);
+        $arrProjects=$query->result();
+        return $arrProjects;
+    }
     function addPhase($projectid,$name,$parentphase=0){
         $data['projectid'] = $projectid;
         $data['name']=$name;
@@ -243,7 +291,7 @@ class Project_M extends CI_Model
         }
         return false;
     }
-    function addactivity($name,$identificator,$description,$date_ini,$date_end,$packageid,$deliverableid){
+    function addactivity($name,$identificator,$description,$date_ini,$date_end,$preact,$postact,$packageid,$deliverableid){
         $data['name']=$name;
         $data['identificator']=$identificator;
         $data['description']=$description;
@@ -251,13 +299,108 @@ class Project_M extends CI_Model
         $data['date_end']=$date_end;
         
         $data['advance']=0;
-        $data['deliverableid'] = $deliverableid;
-        $data['packageid']=$packageid;
+        $data['date_ini']=$date_ini;
+        $data['date_end']=$date_end;
+        $data['preactivity'] = $preact;
+        $data['postactivity']=$postact;
+        
+        $data['packageid'] = $packageid;
+        $data['deliverableid']=$deliverableid;
         
         if ($this->db->insert($this->table_activities, $data)) {
             $activity_id = $this->db->insert_id();
             return $activity_id;
         }
         return false;
+    }
+    function editactivity($id,$name,$identificator,$description,$date_ini,$date_end,$preact,$postact){
+        $data['name']=$name;
+        $data['identificator']=$identificator;
+        $data['description']=$description;
+        $data['date_ini']=$date_ini;
+        $data['date_end']=$date_end;
+    
+        $data['date_ini']=$date_ini;
+        $data['date_end']=$date_end;
+        $data['preactivity'] = $preact;
+        $data['postactivity']=$postact;
+    
+        $this->db->where('id_activity', $id);
+        $this->db->update($this->table_activities, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $id;
+        }else{
+            return false;
+        }
+    }
+    function AdvanceActivity($id_activity,$advance){
+        $data['advance']=$advance;
+        
+        $this->db->where('id_activity', $id_activity);
+        $this->db->update($this->table_activities, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $id_activity;
+        }else{
+            return false;
+        }
+    }
+    function getprevasigned($activityid,$resourceid){
+        $this->db->where('activityid', $activityid);
+        $this->db->where('resourceid', $resourceid);
+        $query=$this->db->get($this->table_asignres);
+        $response=0;
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+            $response = $response->id_resourceactivity;
+        }
+        return $response;
+    }
+    function getasignres($asignid){
+        $this->db->where('id_resourceactivity', $asignid);
+        $query=$this->db->get($this->table_asignres);
+        $response=false;
+        if ($query->num_rows() > 0){
+            $response = $query->row();
+        }
+        return $response;
+    }
+    function delasignedres($asignid){
+        return $this->db->delete($this->table_asignres, array('id_resourceactivity' => $asignid));
+    }
+    function asignresource($resourceid,$activityid,$planned_hours,$running_hours){
+        $data['resourceid']=$resourceid;
+        $data['activityid']=$activityid;
+        $data['planned_hours']=$planned_hours;
+        $data['running_hours']=$running_hours;
+        
+        $person=$this->Rhumans->getPerson($resourceid);
+        $data['running_cost']=$running_hours*$person->cost;
+        $data['planned_cost']=$planned_hours*$person->cost;
+        
+        if ($this->db->insert($this->table_asignres, $data)) {
+            $id_asign = $this->db->insert_id();
+            return $id_asign;
+        }
+        return false;
+    }
+    function updateasignation($id_asign,$resourceid,$planned_hours,$running_hours){
+        $data['resourceid']=$resourceid;
+        $data['planned_hours']=$planned_hours;
+        $data['running_hours']=$running_hours;
+        
+        $person=$this->Rhumans->getPerson($resourceid);
+        $data['running_cost']=$running_hours*$person->cost;
+        $data['planned_cost']=$planned_hours*$person->cost;
+        
+        $this->db->where('id_resourceactivity', $id_asign);
+        $this->db->update($this->table_asignres, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $id_asign;
+        }else{
+            return false;
+        }
     }
 }

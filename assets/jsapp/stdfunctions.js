@@ -98,35 +98,6 @@ function confirmDel(layout,oktext,canceltext,textlabel,data,urlgo,callback) {
       });
 
       confirmModal.modal('show');
-    /*noty({
-      text: textlabel,
-      type: 'confirm',
-      dismissQueue: true,
-      layout: layout,
-      theme: 'noty_theme_default',
-      modal: true,
-      buttons: [
-        {type: 'btn btn-primary', text: oktext, click: function($noty) {
-                $.ajax({
-                    type:"POST",
-                    url:urlgo,
-                    dataType: 'json',
-                    data: data,
-                    error:function (jqXHR, textStatus, errorThrown){
-                        console.log(JSON.stringify(jqXHR) + ' ' + textStatus +'  '+errorThrown );
-                     }
-                }).done(function(data) {
-                    callback(data);
-                });
-                $noty.close();
-            }
-        },
-        {type: 'btn btn-danger', text: canceltext, click: function($noty) {
-            $noty.close();
-          }
-        }
-      ]
-    });*/
   }
 function notify(params){
     append = params.append || 'body';

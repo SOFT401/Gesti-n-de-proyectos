@@ -4,6 +4,7 @@
     {{ extcss('chosen-bootstrap/chosen/chosen.css') }}
     {{ extcss('bootstrap-tree/bootstrap-tree/css/bootstrap-tree.css') }}
     {{ extcss('bootstrap-timepicker/compiled/timepicker.css"') }}
+    {{ extcss('jquery-ui/jquery-ui-1.10.1.custom.min.css') }}
 {% endblock %}
 {% block content %}
 {% import '_tools/formElements.twig' as forms %}
@@ -75,6 +76,7 @@
         </div>
     </div>
     <div class="span8">
+        <div class="row-fluid">
         <div class="widget">
             <div class="widget-title">
                 <h4 id="Current_branch"></h4>
@@ -82,7 +84,7 @@
             <div class="widget-body">
                 <form id="branchinfo">
                     <input type="hidden" name="branchtype" value="" />
-                    <input type=""hidden"" name="branchid" value="" />
+                    <input type="hidden" name="branchid" value="" />
                 </form>
                 <div class="pcontainer project_container" style="display:none;">
                     <div class="buttons">
@@ -126,12 +128,66 @@
                     <div class="indicators"></div>
                 </div>
                 <div class="pcontainer activity_container" style="display:none;">
+                    <div class="buttons">
+                        <a class="btn btn-small btn-warning" id="editacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_editactivity') }}</a>
+                    </div>
                     <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
                     <div>{{ lang('py_identificator') }}:<h4 class="id"></h4></div>
                     <div>{{ lang('date_ini') }}:<div class="date_ini"></div></div>
                     <div>{{ lang('date_end') }}:<div class="date_end"></div></div>
-                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
-                    <div class="indicators"></div>
+                    <div id="acti_advance" class="slider"></div>
+                    <div class="slider-info">
+                        {{ lang('py_advance') }}:<span id="slider-range-max-amount"></span>
+                        <form id="sladvance_activity">
+                            <input type="hidden" name="advance" value="0">
+                            <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('py_save_advance_activity') }}</button>
+                        </form>
+                    </div>
+                    <div class="indicators">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row-fluid pcontainer activity_container " style="display:none;">
+            <div class="widget span12">
+                <div class="widget-title">
+                    <h4>{{ lang('py_resourcesasigned') }}</h4>
+                    <span class="tools">
+                        <a href="#" class=""><i class="icon-chevron-down"></i></a>
+                        <a href="javascript:void()" class=""><i class="icon-plus" title="{{ lang('py_resourcesasignnew') }}"></i></a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-form box box-content" style="display:none;">
+                        <i class="icon-remove closeaddform" style="float:right"></i>
+                        <form id="addresourceactivity" class="form-horizontal" method="post">
+                            {{ forms.campo({'tipo':'input','type':'hidden','name':'idasign'}) }}
+                            {{ forms.campo({'tipo':'select','name':'resource_id','opciones':resources,'label':lang('rrhh_resurce')}) }}
+                            {{ forms.campo({'tipo':'input','type':'text','name':'planned_hours','label':lang('rrhh_plannedhours'),'maxlength':45}) }}
+                            {{ forms.campo({'tipo':'input','type':'text','name':'running_hours','label':lang('rrhh_runninghours'),'maxlength':45}) }}
+                            <div class="form-actions">
+                                <p class="center span5">
+                                    <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('asign') }}</button>
+                                   <button class="btn formcancelar">{{ lang('cancel') }}</button>
+                                </p>
+                           </div>
+                        </form>
+                    </div>
+                    <table id="resource_activity_t" class="table table-striped table-bordered bootstrap-datatable tabledata" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th data-priority="persistent">{{ lang('actions') }}<b></b></th>
+                                <th>{{ lang('rrhh_resurce') }}</th>
+                                <th>{{ lang('rrhh_plannedhours') }}</th>
+                                <th>{{ lang('rrhh_runninghours') }}</th>
+                                <th>{{ lang('rrhh_plannedcost') }}</th>
+                                <th>{{ lang('rrhh_runningcost') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -203,7 +259,7 @@
 		        <div class="divDialogElements">
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
-		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description')}) }}
+		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description'),'rows':3}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -220,13 +276,16 @@
 	        </div>
 		    <div class="modal-body">
 		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'id'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'packageid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
-		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description')}) }}
+		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description'),'rows':3}) }}
 		            {{ forms.campo({'tipo':'input','type':'text','name':'identifier','label':lang('py_identificator'),'maxlength':20,'class':'input-large'}) }}
 		            {{ forms.campo({'tipo':'input','type':'date','name':'date_ini','label':lang('date_ini'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
 		            {{ forms.campo({'tipo':'input','type':'date','name':'date_end','label':lang('date_end'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
+		            {{ forms.campo({'tipo':'select','name':'preactivity','opciones':{0:lang('noone')},'label':lang('py_preactivity')}) }}
+		            {{ forms.campo({'tipo':'select','name':'postactivity','opciones':{0:lang('noone')},'label':lang('py_preactivity')}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -249,6 +308,17 @@
 {{ js('datepicker-es.js') }}
 <script type="text/javascript">
 $(document).ready(function() {
+    $("#acti_advance").slider({
+        range: "min",
+        min: 1,
+        max: 100,
+        value: 2,
+        step:1,
+        slide: function (event, ui) {
+            $("#slider-range-max-amount").text(ui.value+' %');
+            $('form#sladvance_activity').find('input[name=advance]').val(ui.value);
+        }
+    });
     $.datepicker.setDefaults($.datepicker.regional['es']);
     
     $('.datepicker').datepicker({
@@ -313,8 +383,96 @@ $(document).ready(function() {
 			});
     	}
     });
-    
+    $('#addresourceactivity').validate({
+        errorClass:'errorlabelform',
+        elErrorClass:'errorlabel',
+        ignore:':hidden.chzn',
+        rules : {
+            planned_hours:{
+                required :true,
+                number :true,
+            },
+            planned_cost:{
+                required :true,
+                number :true,
+            },
+            running_hours:{
+                required :true,
+                number :true,
+            },
+            running_cost:{
+                required :true,
+                number :true,
+            },
+        },
+        messages : {
+            planned_hours:{
+                required : '{{ lang('auth_required') }}',
+                number : '{{ lang('is_numeric')|format('') }}',
+            },
+            planned_cost:{
+                required : '{{ lang('auth_required') }}',
+                number : '{{ lang('is_numeric')|format('') }}',
+            },
+            running_hours:{
+                required : '{{ lang('auth_required') }}',
+                number : '{{ lang('is_numeric')|format('') }}',
+            },
+            running_cost:{
+                required : '{{ lang('auth_required') }}',
+                number : '{{ lang('is_numeric')|format('') }}',
+            },
+        },
+        submitHandler: function(form) {
+            data=$(form).serializeObject();
+            data.id_activity=$('form#branchinfo').find('input[name=branchid]').val();
+            if($('form#branchinfo').find('input[name=branchtype]').val()=='activity'){
+                $.ajax({
+        		    type:"POST",
+                    url: '{{ site_url('project/asignresource') }}',
+                    dataType:'json',
+                    data: data,
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                    }
+                }).done(function(data){
+                    if (data.notify){
+    					notify({'msj':data.msj,'type':data.notytype})
+    				}
+    				$('.formcancelar').trigger('click');
+    				resetForm($('#formulario'));
+    				$('#addresourceactivity').find('input[name=id]').val(0);
+    				$('.py_act[data-id='+data.actiid+']').trigger('click');
+        		});
+            }
+    	}
+    });
     var tableprojects = $('#tableprojects').dataTable({
+        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'row-fluid'<'span12 center'p>>",
+        "sPaginationType": "bootstrap",
+        "oLanguage": {
+            "sProcessing": "{{ lang('table_processing') }}",
+            "sLengthMenu": "{{ lang('table_recordsperpage') }}",
+            "sZeroRecords": "{{ lang('table_noregisters') }}",
+            "sEmptyTable": "{{ lang('table_empty') }}",
+            "sInfo": "{{ lang('table_pager') }}",
+            "sInfoEmpty": "{{ lang('table_pagerempty') }}",
+            "sInfoFiltered": "{{ lang('table_filtered') }}",
+            "sSearch": "{{ lang('table_search') }}",
+            "sLoadingRecords": "{{ lang('table_loading') }}",
+            "oAria": {
+                "sSortAscending": "{{ lang('table_sortAsc') }}",
+                "sSortDescending": "{{ lang('table_sortDesc') }}",
+            },
+            "oPaginate": {
+                "sFirst": "{{ lang('table_first') }}",
+                "sLast": "{{ lang('table_last') }}",
+                "sNext": "{{ lang('table_next') }}",
+                "sPrevious": "{{ lang('table_previous') }}",
+            },
+        }
+    });
+    var tableresources = $('#resource_activity_t').dataTable({
         "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'row-fluid'<'span12 center'p>>",
         "sPaginationType": "bootstrap",
         "oLanguage": {
@@ -377,7 +535,6 @@ $(document).ready(function() {
             });
     }
     function Draw_ProjectTree(tree,projectid,projectname){
-        console.log(tree);
         html='<ul id="tree_1" class="tree">';
         html+='<li><a href="" data-toggle="branch" class=" tree-toggle" data-role="branch" ><span class="py_project" data-id="'+projectid+'">'+projectname+'</span></a><ul class="branch in">';
         for (var phaseid in tree){
@@ -440,9 +597,69 @@ $(document).ready(function() {
                     $('#loaded_project').find('h1').html(data.data.name);
                     $('#loaded_project').find('p').html(data.data.description);
                     Draw_ProjectTree(data.tree,data.id,data.data.name);
+                    update_Select_Activities(data.id);
+                    $('form#loaded_project').focus();
                 });
         });
     }
+    function dom_tableresources(){
+        $('.edit_asign').on('click',function(){
+            $.ajax({
+            	type:"POST",
+                url: '{{ site_url('project/geteditasignres') }}',
+                dataType:'json',
+                data:{id:$(this).attr('data-id')},
+                error:function (jqXHR, textStatus, errorThrown) {
+                	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+                }).done(function(data){
+                    $('#addresourceactivity').closest('.widget').find('.icon-plus').trigger('click');
+                    $('form#addresourceactivity').find('input[name=idasign]').val(data.data.id_resourceactivity);
+                    $('form#addresourceactivity').find('input[name=planned_hours]').val(data.data.planned_hours);
+                    $('form#addresourceactivity').find('input[name=running_hours]').val(data.data.running_hours);
+                    $('form#addresourceactivity').find('select[name=resource_id]').val(data.data.resourceid);
+                });
+        });
+        $('.delete_asign').on('click',function(){
+            confirmDel('center', '{{ lang('confirm') }}', '{{ lang('cancel') }}', '{{ lang('confirmdelete') }}',
+                    {idasign:$(this).attr('data-id')}, '', delete_Resources_Asigned);
+        });
+    }
+    function delete_Resources_Asigned(idasign){
+        $.ajax({
+            type:"POST",
+            url: '{{ site_url('project/delasignresource') }}',
+            dataType:'json',
+            data:idasign,
+            error:function (jqXHR, textStatus, errorThrown) {
+                console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+            }
+        }).done(function(data){
+            if (data.notify){
+                notify({'msj':data.msj,'type':data.notytype})
+            }
+            $('.py_act[data-id='+data.actiid+']').trigger('click');
+        });
+        return false;
+    }
+    function update_Select_Activities(projectid){
+        $.ajax({
+        	type:"POST",
+            url: '{{ site_url('project/loadproject_activities') }}',
+            dataType:'json',
+            data:{id:projectid},
+            error:function (jqXHR, textStatus, errorThrown) {
+            	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+            }
+            }).done(function(data){
+                $('#addactivityform').find('select[name=preactivity]').find('option[value!=0]').remove();
+                $('#addactivityform').find('select[name=postactivity]').find('option[value!=0]').remove();
+                for(actid in data.activities){
+                    $('#addactivityform').find('select[name=preactivity]').append('<option value="'+actid+'">'+data.activities[actid]+'</option>')
+                    $('#addactivityform').find('select[name=postactivity]').append('<option value="'+actid+'">'+data.activities[actid]+'</option>')
+                }
+            });
+        }
     function dom_project(){
         // cargar acciones de la faase o subfase...
         $('.py_project').click(function(e){
@@ -564,7 +781,6 @@ $(document).ready(function() {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
                 }).done(function(data){
-                    console.log(data);
                     $('#Current_branch').html(data.phasename);
                     $('.pcontainer').slideUp();
                     $('#branchinfo').find('input[name=branchtype]').val('activity');
@@ -573,8 +789,29 @@ $(document).ready(function() {
                     $('.activity_container').find('.id').html(data.data.identificator);
                     $('.activity_container').find('.date_ini').html(data.data.date_ini);
                     $('.activity_container').find('.date_end').html(data.data.date_end);
-                    $('.activity_container').find('.advance').html(data.data.advance);
+                    
+                    $('form#sladvance_activity').find('input[name=advance]').val(data.data.advance);
+                    $("#acti_advance").slider({value:data.data.advance});
+                    $("#slider-range-max-amount").text(data.data.advance+' %');
+                    
                     $('.activity_container').slideDown();
+
+                    tableresources.fnClearTable();
+                	for (key in data.resources){
+                	  htmledit='';
+    	              htmledit+= '<a class="btn btn-info edit_asign" data-id="'+data.resources[key].id_resourceactivity+'" href="javascript:void()"><i class="icon-edit icon-white" title="{{ lang('edit') }}"></i></a>';
+    	              htmledit+= '<a class="btn btn-info delete_asign" data-id="'+data.resources[key].id_resourceactivity+'" href="javascript:void()"><i class="icon-remove icon-white" title="{{ lang('delete') }}"></i></a>';
+    	              row= Array();
+    	              row[0]=htmledit;
+    	              row[1]=data.resources[key].name;
+    	              row[2]=data.resources[key].planned_hours;
+    	              row[3]=data.resources[key].running_hours;
+    	              row[4]=data.resources[key].planned_cost;
+    	              row[5]=data.resources[key].running_cost;
+    	              tableresources.fnAddData( row );
+                	}
+    				dom_tableresources();
+    				tableprojects.fnDraw();
                 });
         });
     }
@@ -785,9 +1022,52 @@ $(document).ready(function() {
 					resetForm($('#addactivityform'));
 					$('#addactivityform').find('input[name=id]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+					update_Select_Activities($('#loaded_project').find('input[name=projectid]').val());
+					$('.py_act[data-id='+data.ok+']').trigger('click');
 	    		});
             }
         },
+    });
+    $('#editacti').on('click',function(){
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='activity'){
+	            $.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/loadactivity') }}',
+	                dataType:'json',
+	                data: {id:$('form#branchinfo').find('input[name=branchid]').val()},
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					$('form#addactivityform').find('input[name=id]').val(data.data.id_activity);
+					$('form#addactivityform').find('input[name=name]').val(data.data.name);
+					$('form#addactivityform').find('textarea[name=description]').val(data.data.description);
+					$('form#addactivityform').find('input[name=identifier]').val(data.data.identificator);
+					$('form#addactivityform').find('input[name=date_ini]').val(data.data.date_ini.substring(0,10));
+					$('form#addactivityform').find('input[name=date_end]').val(data.data.date_end.substring(0,10));
+					$('form#addactivityform').find('select[name=preactivity]').val(data.data.preactivity);
+					$('form#addactivityform').find('select[name=postactivity]').val(data.data.postactivity);
+	    		});
+            }
+    })
+    $('form#sladvance_activity').submit(function(e){
+        e.preventDefault();
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='activity'){
+            $.ajax({
+    		    type:"POST",
+                url: '{{ site_url('project/advanceactivity') }}',
+                dataType:'json',
+                data: {id:$('form#branchinfo').find('input[name=branchid]').val(),advance:$(this).find('input[name=advance]').val()},
+                error:function (jqXHR, textStatus, errorThrown) {
+                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+                }
+            }).done(function(data){
+                if (data.notify){
+					notify({'msj':data.msj,'type':data.notytype})
+				}
+    		});
+        }
+        return false;
     });
     loadProjects();
 });
