@@ -30,6 +30,75 @@ class project_m extends CI_Model
         }
         return $response;
     }
+    function getIndicators($id,$context,$revisiondate){
+        $activities=$this->getActivitiesinTree($id,$context);
+        $horas_planeadas=0;
+        $horas_ejecutadas=0;
+        $bac=0;
+        $pv=0;
+        $ac=0;
+        $ev=0;
+        $cpi=0; // se calcula al final
+        $spi=0; // se calcula al final
+        $advance=0;
+        
+        foreach ($activities as $acti){
+            //PV
+            $date_end=strtotime($acti->date_end)/(60*60*24);
+            $date_ini=strtotime($acti->date_ini)/(60*60*24);
+            $revision=strtotime($revisiondate)/(60*60*24);
+            
+            if($revision>=$date_ini){
+                if($revision<=$date_end){
+                    if($date_end-$date_ini+1 != 0){
+                        $pvtmp=($acti->planned_hours*$acti->cost)*($revision-$date_ini+1)/($date_end-$date_ini+1);
+                    }else{
+                        $pvtmp=0;
+                        //nunca debería entrar aca
+                    }
+                }else{
+                    $pvtmp=$acti->planned_hours*$acti->cost;
+                }
+            }else{
+                $pvtmp=0;
+            }
+            //BAC
+            $bactmp=$acti->cost*$acti->planned_hours;
+            //AC
+            $actmp=$acti->running_hours*$acti->cost;
+            //EV
+            if($acti->planned_hours!=0){
+                $evtmp=$acti->running_hours*$acti->cost*$acti->planned_hours/($acti->running_hours+($acti->planned_hours-$acti->running_hours));
+            }else{
+                $evtmp=0;
+            }
+            //esto por la regla de negocio... en la ecuación se reduce a esto
+            
+            //sumar al total
+            $bac+=$bactmp;
+            $pv+=$pvtmp;
+            $ac+=$actmp;
+            $ev+=$evtmp;
+            $advance+=$acti->advance;
+        }
+        if($ac>0){
+            $cpi=$ev/$ac;
+        }else{
+            $cpi=0;
+        }
+        if($pv>0){
+            $spi=$ev/$pv;
+        }else{
+            $spi=0;
+        }
+        if(count($activities)>0){
+            $advance=$advance/count($activities);
+        }else{
+            $advance=0;
+        }
+        $response=Array('bac'=>$bac,'pv'=>$pv,'ac'=>$ac,'ev'=>$ev,'cpi'=>$cpi,'spi'=>$spi,'advance'=>$advance);
+        return array('activities'=>$activities,'indicators'=>$response);
+    }
     function getActivitiesinTree($id,$context){
         
         $select='';
@@ -39,7 +108,7 @@ class project_m extends CI_Model
             $where="$this->table_phases.projectid=$id";
         }elseif($context=='phase'){
             $select="";
-            $where="($this->table_phases.phaseid=$id OR $this->table_phases.parent_phase=$id)";
+            $where="($this->table_phases.id_phase=$id OR $this->table_phases.parent_phase=$id)";
         }elseif($context=='subphase'){
             $select="";
             $where="$this->table_deliverables.id_deliverable=$id";
@@ -51,20 +120,62 @@ class project_m extends CI_Model
             $where="$this->table_activities.id_activity=$id";
         }
         
-        $sql="select DISTINCT $select $this->table_activities.id_activity,$this->table_activities.identificator,$this->table_activities.name,
-        $this->table_activities.packageid,$this->table_activities.deliverableid
-        from $this->table_activities,$this->table_packages,$this->table_deliverables
-        join $this->table_phases on ($this->table_deliverables.phaseid=$this->table_phases.id_phase)
-        where (($this->table_activities.packageid=$this->table_packages.id_package AND 
-            $this->table_packages.deliverableid=$this->table_deliverables.id_deliverable)OR 
-	       $this->table_activities.deliverableid=$this->table_deliverables.id_deliverable)
-	       AND $where";
+        $sql="select $select $this->table_activities.id_activity,$this->table_activities.identificator,$this->table_activities.advance,
+        $this->table_activities.name,$this->table_activities.date_ini,$this->table_activities.date_end,
+        $this->table_activities.packageid,$this->table_deliverables.id_deliverable,
+        
+        $this->table_resources.resourceid,$this->table_resources.name,$this->table_resources.cost,
+        $this->table_asignres.id_resourceactivity,$this->table_asignres.planned_hours,
+        $this->table_asignres.running_hours,$this->table_asignres.planned_cost,$this->table_asignres.running_cost
+
+        from $this->table_activities
+        left join $this->table_packages on ($this->table_packages.id_package=$this->table_activities.packageid)
+        left join $this->table_deliverables on ($this->table_deliverables.id_deliverable=$this->table_packages.deliverableid)
+        left join $this->table_phases on ($this->table_deliverables.phaseid=$this->table_phases.id_phase)
+        left join $this->table_asignres on ($this->table_activities.id_activity = $this->table_asignres.activityid)
+        left join $this->table_resources on ($this->table_resources.resourceid=$this->table_asignres.resourceid)
+        where $where";
         $query = $this->db->query($sql);
         
         $arrActivities=$query->result();
-        return $arrActivities;
+        
+        if($context=='deliverable'){
+            $where="$this->table_activities.deliverableid=$id";
+        }
+        
+        $sql="select $select $this->table_activities.id_activity,$this->table_activities.identificator,$this->table_activities.advance,
+        $this->table_activities.name,$this->table_activities.date_ini,$this->table_activities.date_end,
+        $this->table_activities.packageid,$this->table_activities.deliverableid,
+        
+        $this->table_resources.resourceid,$this->table_resources.name,$this->table_resources.cost,
+        $this->table_asignres.id_resourceactivity,$this->table_asignres.planned_hours,
+        $this->table_asignres.running_hours,$this->table_asignres.planned_cost,$this->table_asignres.running_cost
+        
+        from $this->table_activities
+        inner join $this->table_deliverables on ($this->table_deliverables.id_deliverable=$this->table_activities.deliverableid)
+        left join $this->table_phases on ($this->table_deliverables.phaseid=$this->table_phases.id_phase)
+        left join $this->table_asignres on ($this->table_activities.id_activity = $this->table_asignres.activityid)
+        left join $this->table_resources on ($this->table_resources.resourceid=$this->table_asignres.resourceid)
+        
+        where $where";
+        $query = $this->db->query($sql);
+        
+        $arrActivities_d=$query->result();
+        
+        $response=array();
+        foreach ($arrActivities as $arr){
+            if(!isset($response[$arr->id_activity.'_'.$arr->resourceid])){
+                $response[$arr->id_activity.'_'.$arr->resourceid]=$arr;
+            }
+        }
+        foreach ($arrActivities_d as $arr){
+            if(!isset($response[$arr->id_activity.'_'.$arr->resourceid])){
+                $response[$arr->id_activity.'_'.$arr->resourceid]=$arr;
+            }
+        }
+        return $response;
+        
     }
-    //TODO: aca lleva indicadores y todo eso
     function getProjectInfo($id){
         $this->db->where('id_project',$id);
         $response=array();
@@ -268,6 +379,18 @@ class project_m extends CI_Model
         }
         return false;
     }
+    function editPhase($phaseid,$name){
+        $data['name']=$name;
+        
+        $this->db->where('id_phase', $phaseid);
+        $this->db->update($this->table_phases, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $phaseid;
+        }else{
+            return false;
+        }
+    }
     function AddDeliverable($phaseid,$description){
         $data['phaseid'] = $phaseid;
         $data['description']=$description;
@@ -278,6 +401,19 @@ class project_m extends CI_Model
             return $deliverable_id;
         }
         return false;
+    }
+    function EditDeliverable($delid,$description){
+        $data['description']=$description;
+        $data['advance']=0;
+        
+        $this->db->where('id_deliverable', $delid);
+        $this->db->update($this->table_deliverables, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $delid;
+        }else{
+            return false;
+        }
     }
     function AddPackage($deliverableid,$name,$description=''){
         $data['deliverableid'] = $deliverableid;
@@ -290,6 +426,20 @@ class project_m extends CI_Model
             return $deliverable_id;
         }
         return false;
+    }
+    function EditPackage($packageid,$name,$description){
+        $data['name']=$name;
+        $data['description']=$description;
+        $data['advance']=0;
+        
+        $this->db->where('id_package', $packageid);
+        $this->db->update($this->table_packages, $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return $packageid;
+        }else{
+            return false;
+        }
     }
     function addactivity($name,$identificator,$description,$date_ini,$date_end,$preact,$postact,$packageid,$deliverableid){
         $data['name']=$name;

@@ -102,3 +102,6 @@ ul.wide-list li .action {
 	background: url(../imgapp/project/activity.png) no-repeat left;
 	padding-left:20px;
 }
+.indicators{
+	border: 1px solid #404040;
+}

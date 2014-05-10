@@ -73,17 +73,29 @@ class Project extends MY_Controller {
 	public function loadprojectinfo(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $projectid=$this->input->post('id');
+	    
+	    $revision_date=$this->input->post('revision_date');
+	     
+	    $indicators=$this->project_m->getIndicators($projectid,'project',$revision_date);
+	    
 	    echo json_encode(array(
 	            'data'=>$this->project_m->getProjectInfo($projectid),
+	            'indicators'=>$indicators,
 	            'id'=>$projectid));
 	}
 	//obtener la información del proyecto para su administración
 	public function loadproject(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $projectid=$this->input->post('id');
+	    
+	    $revision_date=$this->input->post('revision_date');
+	    
+	    $indicators=$this->project_m->getIndicators($projectid,'project',$revision_date);
+	    
 	    echo json_encode(array(
 	            'data'=>$this->project_m->getProject($projectid),
 	            'tree'=>$this->project_m->getProjectTree($projectid),
+	            'indicators'=>$indicators,
 	            'id'=>$projectid));
 	}
 	public function loadproject_activities(){
@@ -101,24 +113,41 @@ class Project extends MY_Controller {
 	public function loadphase(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $phaseid=$this->input->post('id');
-	    echo json_encode(array('data'=>$this->project_m->getPhaseInfo($phaseid)));
+	    $revision_date=$this->input->post('revision_date');
+	    
+	    $indicators=$this->project_m->getIndicators($phaseid,'phase',$revision_date);
+	    echo json_encode(array('data'=>$this->project_m->getPhaseInfo($phaseid),'indicators'=>$indicators));
 	}
 	public function loaddeliverable(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $delivid=$this->input->post('id');
-	    echo json_encode(array('data'=>$this->project_m->getDeliverableInfo($delivid)));
+	    
+	    $revision_date=$this->input->post('revision_date');
+	     
+	    $indicators=$this->project_m->getIndicators($delivid,'deliverable',$revision_date);
+	    
+	    echo json_encode(array('data'=>$this->project_m->getDeliverableInfo($delivid),'indicators'=>$indicators));
 	}
 	public function loadpackage(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $packageid=$this->input->post('id');
-	    echo json_encode(array('data'=>$this->project_m->getPackageInfo($packageid)));
+	    $revision_date=$this->input->post('revision_date');
+	    
+	    $indicators=$this->project_m->getIndicators($packageid,'package',$revision_date);
+	    echo json_encode(array('data'=>$this->project_m->getPackageInfo($packageid),'indicators'=>$indicators));
 	}
 	public function loadactivity(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $activityid=$this->input->post('id');
+	    
+	    $revision_date=$this->input->post('revision_date');
+	    
+	    $indicators=$this->project_m->getIndicators($activityid,'activity',$revision_date);
+	    
 	    echo json_encode(array(
 	            'data'=>$this->project_m->getActivityInfo($activityid),
-	            'resources'=>$this->project_m->getActivityResources($activityid)
+	            'resources'=>$this->project_m->getActivityResources($activityid),
+	            'indicators'=>$indicators,
 	    ));
 	}
 	public function addphase(){
@@ -126,7 +155,12 @@ class Project extends MY_Controller {
 	    $projectid=$this->input->post('projectid');
 	    $name=$this->input->post('name');
 	    $parent_phase=$this->input->post('phaseid')|0;
-	    $ok=$this->project_m->AddPhase($projectid,$name,$parent_phase);
+	    $pid=$this->input->post('pid');
+	    if($pid>0){
+	        $ok=$this->project_m->EditPhase($pid,$name);
+	    }else{
+	       $ok=$this->project_m->AddPhase($projectid,$name,$parent_phase);
+	    }
 	    if($ok){
 	        $msj=lang('operationok');
 	        $type='success';
@@ -134,13 +168,19 @@ class Project extends MY_Controller {
 	        $msj=lang('operationfails');
 	        $type='error';
 	    }
-	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type));
+	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type,'pid'=>$pid));
 	}
 	public function adddeliverable(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $phaseid=$this->input->post('phaseid');
 	    $name=$this->input->post('name');
-	    $ok=$this->project_m->AddDeliverable($phaseid,$name);
+	    $delid=$this->input->post('deliverableid');
+	    if($delid>0){
+	        $ok=$this->project_m->EditDeliverable($delid,$name);
+	    }else{
+	        $ok=$this->project_m->AddDeliverable($phaseid,$name);
+	    }
+	    
 	    if($ok){
 	        $msj=lang('operationok');
 	        $type='success';
@@ -148,14 +188,22 @@ class Project extends MY_Controller {
 	        $msj=lang('operationfails');
 	        $type='error';
 	    }
-	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type));
+	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type,'delid'=>$delid));
 	}
 	public function addpackage(){
 	    if(!$this->input->is_ajax_request()) redirect();
 	    $deliverableid=$this->input->post('delivid');
 	    $name=$this->input->post('name');
 	    $description=$this->input->post('description')|'';
-	    $ok=$this->project_m->AddPackage($deliverableid,$name,$description);
+	    
+	    
+	    $packid=$this->input->post('packageid');
+	    if($packid>0){
+	        $ok=$this->project_m->EditPackage($packid,$name,$description);
+	    }else{
+	        $ok=$this->project_m->AddPackage($deliverableid,$name,$description);
+	    }
+	    
 	    if($ok){
 	        $msj=lang('operationok');
 	        $type='success';
@@ -163,7 +211,7 @@ class Project extends MY_Controller {
 	        $msj=lang('operationfails');
 	        $type='error';
 	    }
-	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type));
+	    echo json_encode(array('notify'=>true,'msj'=>$msj,'notytype'=>$type,'packid'=>$packid));
 	}
 	public function addactivity(){
 	    if(!$this->input->is_ajax_request()) redirect();
@@ -175,7 +223,7 @@ class Project extends MY_Controller {
 	    $description=$this->input->post('description')|'';
 	    $identifier=$this->input->post('identifier');
 	    $date_ini=$this->input->post('date_ini').' 00:00:00';
-	    $date_end=$this->input->post('date_end').' 23:59:59';
+	    $date_end=$this->input->post('date_end').' 00:00:00';
 	    
 	    $preact=$this->input->post('preactivity');
 	    $postact=$this->input->post('postactivity');

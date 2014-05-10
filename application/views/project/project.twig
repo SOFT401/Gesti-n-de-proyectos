@@ -54,6 +54,7 @@
             <div class="container center"><h1></h1></div>
             <div class="container"><p></p></div>
         </form>
+        <div id="testinactivities"></div>
     </div>
 </div>
 <div class="row-fluid">
@@ -79,62 +80,72 @@
         <div class="row-fluid">
         <div class="widget">
             <div class="widget-title">
-                <h4 id="Current_branch"></h4>
             </div>
             <div class="widget-body">
+                <div class="form-horizontal">
+                {{ forms.campo({'tipo':'input','type':'date','name':'revision_date','label':lang('py_revisiondate'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
+                </div>
                 <form id="branchinfo">
                     <input type="hidden" name="branchtype" value="" />
                     <input type="hidden" name="branchid" value="" />
                 </form>
-                <div class="pcontainer project_container" style="display:none;">
+                <div class="pcontainer project_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="addphase" data-toggle="modal" data-target="#addphase_cont">{{ lang('py_addphase') }}</a>
+                        <a class="btn btn-small btn-warning addphase" data-toggle="modal" data-target="#addphase_cont">{{ lang('py_addphase') }}</a>
                     </div>
-                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
-                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div><div class="control name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('py_advance') }}:</div><div class="control advance"></div></div>
+                    <h4>{{ lang('py_indicators') }}</h4>
                     <div class="indicators"></div>
                 </div>
-                <div class="pcontainer phase_container" style="display:none;">
+                <div class="pcontainer phase_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="addsubphase" data-toggle="modal" data-target="#addsubphase_cont">{{ lang('py_addsubphase') }}</a>
+                        <a class="btn btn-small btn-warning edtphase" data-toggle="modal" data-target="#addphase_cont">{{ lang('py_editphase') }}</a>
+                        <a class="btn btn-small btn-warning addsubphase" data-toggle="modal" data-target="#addsubphase_cont">{{ lang('py_addsubphase') }}</a>
                     </div>
-                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div><div class="control name"><h1></h1></div></div>
                     <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <h4>{{ lang('py_indicators') }}</h4>
                     <div class="indicators"></div>
                 </div>
-                <div class="pcontainer subphase_container" style="display:none;">
+                <div class="pcontainer subphase_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="adddeliv" data-toggle="modal" data-target="#adddeliverable_cont">{{ lang('py_adddeliv') }}</a>
+                        <a class="btn btn-small btn-warning edtsubphase" data-toggle="modal" data-target="#addsubphase_cont">{{ lang('py_editsubphase') }}</a>
+                        <a class="btn btn-small btn-warning adddeliv" data-toggle="modal" data-target="#adddeliverable_cont">{{ lang('py_adddeliv') }}</a>
                     </div>
-                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
-                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div><div class="control name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('py_advance') }}:</div><div class="control advance"></div></div>
+                    <h4>{{ lang('py_indicators') }}</h4>
                     <div class="indicators"></div>
                 </div>
-                <div class="pcontainer deliver_container" style="display:none;">
+                <div class="pcontainer deliver_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="addpackage" data-toggle="modal" data-target="#addpackage_cont">{{ lang('py_addpackage') }}</a>
-                        <a class="btn btn-small btn-warning" id="addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
+                        <a class="btn btn-small btn-warning edtdeliverable" data-toggle="modal" data-target="#adddeliverable_cont">{{ lang('py_editdeliverable') }}</a>
+                        <a class="btn btn-small btn-warning addpackage" data-toggle="modal" data-target="#addpackage_cont">{{ lang('py_addpackage') }}</a>
+                        <a class="btn btn-small btn-warning addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
                     </div>
-                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
-                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div><div class="control name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('py_advance') }}:</div><div class="control advance"></div></div>
+                    <h4>{{ lang('py_indicators') }}</h4>
                     <div class="indicators"></div>
                 </div>
-                <div class="pcontainer package_container" style="display:none;">
+                <div class="pcontainer package_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
+                        <a class="btn btn-small btn-warning edtpackage" data-toggle="modal" data-target="#addpackage_cont">{{ lang('py_editpackage') }}</a>
+                        <a class="btn btn-small btn-warning addacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_addactivity') }}</a>
                     </div>
-                   <div>{{ lang('name') }}: <div class="name"><h1></h1></div></div>
-                    <div>{{ lang('py_advance') }}:<div class="advance"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div> <div class="control name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('py_advance') }}:</div><div class="control advance"></div></div>
                     <div class="indicators"></div>
                 </div>
-                <div class="pcontainer activity_container" style="display:none;">
+                <div class="pcontainer activity_container form-horizontal" style="display:none;">
                     <div class="buttons">
-                        <a class="btn btn-small btn-warning" id="editacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_editactivity') }}</a>
+                        <a class="btn btn-small btn-warning editacti" data-toggle="modal" data-target="#addactivity_cont">{{ lang('py_editactivity') }}</a>
                     </div>
-                    <div>{{ lang('name') }}:<div class="name"><h1></h1></div></div>
-                    <div>{{ lang('py_identificator') }}:<h4 class="id"></h4></div>
-                    <div>{{ lang('date_ini') }}:<div class="date_ini"></div></div>
-                    <div>{{ lang('date_end') }}:<div class="date_end"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('name') }}:</div><div class="control name"><h1></h1></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('py_identificator') }}:</div><div class="control"><h4 class="id"></h4></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('date_ini') }}:</div><div class="control date_ini"></div></div>
+                    <div class="control-group"><div class="control-label">{{ lang('date_end') }}:</div><div class="control date_end"></div></div>
                     <div id="acti_advance" class="slider"></div>
                     <div class="slider-info">
                         {{ lang('py_advance') }}:<span id="slider-range-max-amount"></span>
@@ -143,6 +154,7 @@
                             <button type="submit" name="submit" class="btn btn-primary" value="send">{{ lang('py_save_advance_activity') }}</button>
                         </form>
                     </div>
+                    <h4>{{ lang('py_indicators') }}</h4>
                     <div class="indicators">
                     </div>
                 </div>
@@ -203,7 +215,8 @@
 		    <div class="modal-body">
 		        <div class="divDialogElements">
 		          {{ forms.campo({'tipo':'input','type':'hidden','name':'projectid'}) }}
-		          {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		          {{ forms.campo({'tipo':'input','type':'hidden','name':'pid'}) }}
+		          {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':45,'class':'input-large'}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -221,8 +234,9 @@
 		    <div class="modal-body">
 		        <div class="divDialogElements">
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'phaseid'}) }}
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'pid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'projectid'}) }}
-		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':45,'class':'input-large'}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -239,8 +253,9 @@
 	        </div>
 		    <div class="modal-body">
 		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'deliverableid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'phaseid'}) }}
-		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':45,'class':'input-large'}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -257,8 +272,9 @@
 	        </div>
 		    <div class="modal-body">
 		        <div class="divDialogElements">
+		            {{ forms.campo({'tipo':'input','type':'hidden','name':'packageid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
-		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':45,'class':'input-large'}) }}
 		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description'),'rows':3}) }}
 		        </div>
 		    </div>
@@ -279,13 +295,13 @@
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'id'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'delivid'}) }}
 		            {{ forms.campo({'tipo':'input','type':'hidden','name':'packageid'}) }}
-		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':20,'class':'input-large'}) }}
+		            {{ forms.campo({'tipo':'input','type':'text','name':'name','label':lang('name'),'maxlength':45,'class':'input-large'}) }}
 		            {{ forms.campo({'tipo':'textarea','name':'description','label':lang('description'),'rows':3}) }}
 		            {{ forms.campo({'tipo':'input','type':'text','name':'identifier','label':lang('py_identificator'),'maxlength':20,'class':'input-large'}) }}
 		            {{ forms.campo({'tipo':'input','type':'date','name':'date_ini','label':lang('date_ini'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
 		            {{ forms.campo({'tipo':'input','type':'date','name':'date_end','label':lang('date_end'),'maxlength':10,'class':'m-ctrl-medium','append':{'tipo':'icon','name':'calendar'}}) }}
 		            {{ forms.campo({'tipo':'select','name':'preactivity','opciones':{0:lang('noone')},'label':lang('py_preactivity')}) }}
-		            {{ forms.campo({'tipo':'select','name':'postactivity','opciones':{0:lang('noone')},'label':lang('py_preactivity')}) }}
+		            {{ forms.campo({'tipo':'select','name':'postactivity','opciones':{0:lang('noone')},'label':lang('py_postactivity')}) }}
 		        </div>
 		    </div>
 		    <div class="modal-footer">
@@ -299,6 +315,7 @@
 {% block jscode %}
 {{ js('jquery.validate.js') }}
 {{ js('additional-methods.min.js') }}
+{{ js('accounting.js') }}
 {{ extjs('chosen-bootstrap/chosen/chosen.jquery.min.js') }}
 {{ extjs('data-tables/jquery.dataTables.js') }}
 {{ extjs('data-tables/DT_bootstrap.js') }}
@@ -324,6 +341,7 @@ $(document).ready(function() {
     $('.datepicker').datepicker({
     	format:'yyyy-mm-dd',
     });
+    $('#revision_date').val('{{ 'now'|date('Y-m-d') }}');
     $('.resetform').click(function(){
         resetForm($(this).closest('.widget-form').find('form'));
         $(this).closest('.widget').find('.widget-form').find('form').find('input[name=id]').val(0);
@@ -591,6 +609,8 @@ $(document).ready(function() {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
                 }).done(function(data){
+                    $('#branchinfo').find('input[name=branchtype]').val('project');
+                    $('#branchinfo').find('input[name=branchid]').val(data.id);
                     $('#addphaseform').find('input[name=projectid]').val(data.id);
                     $('#loaded_project').find('input[name=projectid]').val(data.id);
                     $('#addsubphaseform').find('input[name=projectid]').val(data.id);
@@ -599,6 +619,7 @@ $(document).ready(function() {
                     Draw_ProjectTree(data.tree,data.id,data.data.name);
                     update_Select_Activities(data.id);
                     $('form#loaded_project').focus();
+                    setIndicators(data.indicators);
                 });
         });
     }
@@ -668,7 +689,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loadprojectinfo') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -681,6 +702,7 @@ $(document).ready(function() {
                     $('.project_container').find('.name').find('h1').html(data.data.name);
                     $('.project_container').find('.advance').html(data.data.advance);
                     $('.project_container').slideDown();
+                    setIndicators(data.indicators);
                 });
         });
         $('.py_phase').click(function(e){
@@ -689,7 +711,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loadphase') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -702,6 +724,7 @@ $(document).ready(function() {
                     $('.phase_container').find('.name').find('h1').html(data.data.name);
                     $('.phase_container').find('.advance').html(data.data.advance);
                     $('.phase_container').slideDown();
+                    setIndicators(data.indicators);
                 });
         });
         $('.py_subphase').click(function(e){
@@ -710,7 +733,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loadphase') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -723,6 +746,7 @@ $(document).ready(function() {
                     $('.subphase_container').find('.name').find('h1').html(data.data.name);
                     $('.subphase_container').find('.advance').html(data.data.advance);
                     $('.subphase_container').slideDown();
+                    setIndicators(data.indicators);
                 });
         });
         $('.py_deliv').click(function(e){
@@ -731,7 +755,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loaddeliverable') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -746,6 +770,7 @@ $(document).ready(function() {
                     $('.deliver_container').find('.name').find('h1').html(data.data.description);
                     $('.deliver_container').find('.advance').html(data.data.advance);
                     $('.deliver_container').slideDown();
+                    setIndicators(data.indicators);
                 });
         });
         $('.py_pack').click(function(e){
@@ -754,7 +779,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loadpackage') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -768,6 +793,7 @@ $(document).ready(function() {
                     $('.package_container').find('.name').find('h1').html(data.data.name);
                     $('.package_container').find('.advance').html(data.data.advance);
                     $('.package_container').slideDown();
+                    setIndicators(data.indicators);
                 });
         });
         $('.py_act').click(function(e){
@@ -776,7 +802,7 @@ $(document).ready(function() {
             	type:"POST",
                 url: '{{ site_url('project/loadactivity') }}',
                 dataType:'json',
-                data:{id:$(this).attr('data-id')},
+                data:{id:$(this).attr('data-id'),revision_date:$('#revision_date').val()},
                 error:function (jqXHR, textStatus, errorThrown) {
                 	console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
                 }
@@ -812,8 +838,27 @@ $(document).ready(function() {
                 	}
     				dom_tableresources();
     				tableprojects.fnDraw();
+    				setIndicators(data.indicators);
                 });
         });
+    }
+    function setIndicators(indicators){
+        div= $('form#branchinfo').find('input[name=branchtype]').val();
+        html='<div class="form-horizontal">'+
+        '<div class="control-group"><div class="control-label"><label>{{ lang('py_indbac') }}</label></div><div class="control-group">'+accounting.formatMoney(indicators.indicators.bac)+'</div>'+
+            '<div class="control-group"><div class="control-label"><label>{{ lang('py_indpv') }}</label></div><div class="control-group">'+accounting.formatMoney(indicators.indicators.pv)+'</div>'+
+            '<div class="control-group"><div class="control-label"><label>{{ lang('py_indac') }}</label></div><div class="control-group">'+accounting.formatMoney(indicators.indicators.ac)+'</div>'+
+            '<div class="control-group"><div class="control-label"><label>{{ lang('py_indev') }}</label></div><div class="control-group">'+accounting.formatMoney(indicators.indicators.ev)+'</div>'+
+            '<div class="control-group"><div class="control-label"><label>{{ lang('py_indcpi') }}</label></div><div class="control-group">'+parseFloat(indicators.indicators.cpi).toFixed(2)+'</div>'+
+            '<div class="control-group"><div class="control-label"><label>{{ lang('py_indspi') }}</label></div><div class="control-group">'+parseFloat(indicators.indicators.spi).toFixed(2)+'</div>';
+            
+        if(div=='deliverable'){
+            div='deliver';
+        }
+        $('.'+div+'_container').find('.indicators').html(html);
+        $('.'+div+'_container').find('.advance').html(indicators.indicators.advance+' %');
+        
+        console.log(indicators);
     }
     $('#addphaseform').validate({
         errorClass:'errorlabelform',
@@ -849,8 +894,9 @@ $(document).ready(function() {
 					}
 					$('#addphaseform').find('.cancelarmodal').trigger('click');
 					resetForm($('#addphaseform'));
-					$('#addphaseform').find('input[name=id]').val(0);
+					$('#addphaseform').find('input[name=pid]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+					$('.py_phase[data-id='+data.pid+']').trigger('click');
 	    		});
             }
         },
@@ -889,8 +935,9 @@ $(document).ready(function() {
 					}
 					$('#addsubphaseform').find('.cancelarmodal').trigger('click');
 					resetForm($('#addsubphaseform'));
-					$('#addsubphaseform').find('input[name=id]').val(0);
+					$('#addsubphaseform').find('input[name=pid]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+					$('.py_subphase[data-id='+data.pid+']').trigger('click');
 	    		});
             }
         },
@@ -929,8 +976,9 @@ $(document).ready(function() {
 					}
 					$('#adddeliverableform').find('.cancelarmodal').trigger('click');
 					resetForm($('#adddeliverableform'));
-					$('#adddeliverableform').find('input[name=id]').val(0);
+					$('#adddeliverableform').find('input[name=deliverableid]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+					$('.py_deliv[data-id='+data.delid+']').trigger('click');
 	    		});
             }
         },
@@ -969,8 +1017,9 @@ $(document).ready(function() {
 					}
 					$('#addpackageform').find('.cancelarmodal').trigger('click');
 					resetForm($('#addpackageform'));
-					$('#addpackageform').find('input[name=id]').val(0);
+					$('#addpackageform').find('input[name=packageid]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
+					$('.py_pack[data-id='+data.packid+']').trigger('click');
 	    		});
             }
         },
@@ -1023,12 +1072,12 @@ $(document).ready(function() {
 					$('#addactivityform').find('input[name=id]').val(0);
 					loadProjectTree($('#loaded_project').find('input[name=projectid]').val());
 					update_Select_Activities($('#loaded_project').find('input[name=projectid]').val());
-					$('.py_act[data-id='+data.ok+']').trigger('click');
+					$('.py_act[data-id='+data.actid+']').trigger('click');
 	    		});
             }
         },
     });
-    $('#editacti').on('click',function(){
+    $('.editacti').on('click',function(){
         if($('form#branchinfo').find('input[name=branchtype]').val()=='activity'){
 	            $.ajax({
 	    		    type:"POST",
@@ -1049,7 +1098,72 @@ $(document).ready(function() {
 					$('form#addactivityform').find('select[name=postactivity]').val(data.data.postactivity);
 	    		});
             }
-    })
+    });
+    $('.edtpackage').on('click',function(){
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='package'){
+	            $.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/loadpackage') }}',
+	                dataType:'json',
+	                data: {id:$('form#branchinfo').find('input[name=branchid]').val()},
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					$('form#addpackageform').find('input[name=packageid]').val(data.data.id_package);
+					$('form#addpackageform').find('input[name=name]').val(data.data.name);
+					$('form#addpackageform').find('textarea[name=description]').val(data.data.description);
+	    		});
+            }
+    });
+    $('.edtdeliverable').on('click',function(){
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='deliverable'){
+	            $.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/loaddeliverable') }}',
+	                dataType:'json',
+	                data: {id:$('form#branchinfo').find('input[name=branchid]').val()},
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					$('form#adddeliverableform').find('input[name=deliverableid]').val(data.data.id_deliverable);
+					$('form#adddeliverableform').find('input[name=name]').val(data.data.description);
+	    		});
+            }
+    });
+    $('.edtsubphase').on('click',function(){
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='subphase'){
+	            $.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/loadphase') }}',
+	                dataType:'json',
+	                data: {id:$('form#branchinfo').find('input[name=branchid]').val()},
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					$('form#addsubphaseform').find('input[name=pid]').val(data.data.id_phase);
+					$('form#addsubphaseform').find('input[name=name]').val(data.data.name);
+	    		});
+            }
+    });
+    $('.edtphase').on('click',function(){
+        if($('form#branchinfo').find('input[name=branchtype]').val()=='phase'){
+	            $.ajax({
+	    		    type:"POST",
+	                url: '{{ site_url('project/loadphase') }}',
+	                dataType:'json',
+	                data: {id:$('form#branchinfo').find('input[name=branchid]').val()},
+	                error:function (jqXHR, textStatus, errorThrown) {
+	                    console.log(JSON.stringify(jqXHR) + ' ' + textStatus + '  ' + errorThrown);
+	                }
+	            }).done(function(data){
+					$('form#addphaseform').find('input[name=pid]').val(data.data.id_phase);
+					$('form#addphaseform').find('input[name=name]').val(data.data.name);
+	    		});
+            }
+    });
     $('form#sladvance_activity').submit(function(e){
         e.preventDefault();
         if($('form#branchinfo').find('input[name=branchtype]').val()=='activity'){

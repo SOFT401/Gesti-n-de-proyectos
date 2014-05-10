@@ -105,9 +105,13 @@ $lang['py_structure']="Estructura del Proyecto";
 $lang['py_addnew']="Crear Nuevo Proyecto";
 $lang['py_admin']="Administración del proyecto";
 $lang['py_addphase']="Agregar Fase";
+$lang['py_editphase']="Editar Fase";
 $lang['py_addsubphase']="Agregar Subfase";
+$lang['py_editsubphase']="Editar Subfase";
 $lang['py_adddeliv']="Agregar Entregable";
+$lang['py_editdeliverable']="Editar Entregable";
 $lang['py_addpackage']="Agregar Paquete de Trabajo";
+$lang['py_editpackage']="Editar Paquete de Trabajo";
 $lang['py_addactivity']="Agregar Actividad";
 $lang['py_editactivity']="Editar Actividad";
 $lang['py_shouldselected']="Debe Haber un proyecto seleccionado";
@@ -115,14 +119,25 @@ $lang['py_identificator']="Identificador";
 $lang['py_preactivity']="Agregar Predecesora";
 $lang['py_postactivity']="Agregar Sucesora";
 $lang['py_advance']="Avance";
-$lang['py_newphase']="Nueva Fase";
-$lang['py_newsubphase']="Nueva Subfase";
-$lang['py_newdeliverable']="Nuevo Entregable";
-$lang['py_newpackage']="Nuevo Paquete de Trabajo";
-$lang['py_newactivity']="Nueva Actividad";
+$lang['py_newphase']="Fase";
+$lang['py_newsubphase']="Subfase";
+$lang['py_newdeliverable']="Entregable";
+$lang['py_newpackage']="Paquete de Trabajo";
+$lang['py_newactivity']="Actividad";
 $lang['py_save_advance_activity']="Guardar Avance";
 $lang['py_resourcesasigned']="Recursos Asignados";
 $lang['py_resourcesasignnew']="Asignar Nuevo Recurso";
 $lang['ra_alreadyasigned']="El recurso ya se encuentra Asignado, editelo en vez de crear una nueva asignación";
 $lang['ra_alreadyasignedbyother']="Ya existe una asignación a ese recurso, editela";
+
+$lang['py_revisiondate']="Fecha de Revisión";
+$lang['py_indbac']="Costo Planeado (BAC)";
+$lang['py_indac']="Ac";
+$lang['py_indcpi']="cpi";
+$lang['py_indev']="ev";
+$lang['py_indpv']="pv";
+$lang['py_indspi']="spi";
+$lang['py_indicators']="Indicadores:";
+
+
 
